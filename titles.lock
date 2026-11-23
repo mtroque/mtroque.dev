@@ -1,0 +1,10 @@
+# Paper titles and the patent's official title, exactly as published. Never edit these to fix copy.
+# pnpm check:titles fails if the site's titles differ from this list.
+Method and Electronic Apparatus for Providing Prompt-to-Output Attribution Interface
+Crowdsource, Crawl, or Generate? Creating SEA-VL, a Multicultural Vision-Language Dataset for Southeast Asia
+Rethinking the Role of Text Complexity in Language Model Pretraining
+Beyond Repetition: Text Simplification and Curriculum Learning for Data-Constrained Pretraining
+Scaling, Simplification, and Adaptation: Lessons from Pretraining on Machine-Translated Text
+Legal Information Retrieval through Embedding Models and Synthetic Question Generation: Insights from the Philippine Tax Code
+Harnessing NLP for Legal Section Retrieval: Embedding Models in Philippine Taxation Law
+Data-centric Advanced Knowledge Interface for Legal Archives

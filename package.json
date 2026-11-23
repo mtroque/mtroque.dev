@@ -7,13 +7,16 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "pnpm lint:copy && astro build",
     "preview": "astro preview",
     "check:astro": "astro check",
     "check:domains": "tsx scripts/check-domains.ts",
-    "check": "pnpm check:astro && pnpm check:domains && pnpm test",
+    "check": "pnpm check:astro && pnpm check:domains && pnpm check:titles && pnpm lint:copy && pnpm test && pnpm todos",
     "test": "vitest run",
-    "screens": "tsx scripts/screens.ts"
+    "screens": "tsx scripts/screens.ts",
+    "todos": "tsx scripts/todos.ts",
+    "lint:copy": "tsx scripts/copy-lint/index.ts",
+    "check:titles": "tsx scripts/check-titles.ts"
   },
   "devEngines": {
     "runtime": {
@@ -30,9 +33,18 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@types/mdast": "^4.0.4",
+    "fast-glob": "^3.3.3",
+    "mdast-util-to-string": "^4.0.0",
     "playwright": "^1.65.1",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx": "^3.1.1",
+    "remark-parse": "^11.0.0",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.2.0",
     "vitest": "^5.1.1",
     "yaml": "^2.9.1"
   },

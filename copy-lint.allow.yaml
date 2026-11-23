@@ -1,0 +1,7 @@
+# Acknowledged hits for the heuristic copy rules (triplet, closing-restatement).
+# Each entry is keyed to the exact sentence: editing the sentence expires it.
+# This file is public; reasons say why the sentence stays, nothing more.
+
+- rule: closing-restatement
+  sentence: 'Over time, more of the guardrails are deterministic, and "done" can be trusted more.'
+  reason: The point of the section. Kept on purpose (review 2026-11-23).
