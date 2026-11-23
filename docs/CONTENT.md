@@ -20,5 +20,6 @@ Rules that still apply:
 - Paper titles are locked in `titles.lock`.
 - `pnpm lint:copy` checks every string against the copy rules in `docs/PLAN.md` §5.
 
-The last full version of this file is in commit 315561c. To confirm the collections still match it:
-`pnpm check:verbatim --ref 315561c`
+The last full version of this file is in commit 315561c. `pnpm check:verbatim` (part of `pnpm check`)
+confirms the collections still match it, plus the approved changes logged in `docs/copy-changes.yaml`.
+Any other copy edit fails the check until it is approved and logged there.

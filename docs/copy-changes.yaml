@@ -1,0 +1,11 @@
+# Copy changes approved after migration. check:verbatim applies each one to the
+# CONTENT.md baseline (commit 315561c) before comparing, so the site may differ from
+# the baseline only where an entry here says so. Add an entry only with the owner's approval.
+
+- file: src/content/projects/tablekeeper.mdx
+  before: "That's why I built Strop, below."
+  after: "That's why I built [Strop](/projects/strop/)."
+  reason: >-
+    The full Strop case study lives on its own page, so "below" was wrong on both the
+    home page and the Tablekeeper case study. Strop now links to its case study.
+  approved: 2026-11-23

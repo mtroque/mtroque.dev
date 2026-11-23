@@ -11,13 +11,13 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "check:domains": "tsx scripts/check-domains.ts",
-    "check": "pnpm check:astro && pnpm check:domains && pnpm check:titles && pnpm lint:copy && pnpm test && pnpm todos",
+    "check": "pnpm check:astro && pnpm check:domains && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
     "test": "vitest run",
     "screens": "tsx scripts/screens.ts",
     "todos": "tsx scripts/todos.ts",
     "lint:copy": "tsx scripts/copy-lint/index.ts",
     "check:titles": "tsx scripts/check-titles.ts",
-    "check:verbatim": "tsx scripts/check-verbatim.ts"
+    "check:verbatim": "tsx scripts/check-verbatim.ts --ref 315561c"
   },
   "devEngines": {
     "runtime": {

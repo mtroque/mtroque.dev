@@ -4,8 +4,9 @@
  * Migration guard: every string in src/content/ (except ui.yaml, which is new UI copy) must
  * appear character-for-character in CONTENT.md, so moving the copy can't reword anything.
  * After CONTENT.md is retired, check against its last full version: --ref <commit>.
+ * Approved changes in docs/copy-changes.yaml are applied to the baseline first.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import fg from 'fast-glob';
 import { parse as parseYaml } from 'yaml';
@@ -40,6 +41,31 @@ export function mdxBodyLines(body: string): string[] {
     .flatMap((l) => (l.startsWith('|') ? l.split('|').map((c) => c.trim()).filter(Boolean) : [l]));
 }
 
+export type CopyChange = { file: string; before: string; after: string; reason: string; approved: string };
+
+export const COPY_CHANGES = 'docs/copy-changes.yaml';
+
+export function loadCopyChanges(path = COPY_CHANGES): CopyChange[] {
+  if (!existsSync(path)) return [];
+  const raw = (parseYaml(readFileSync(path, 'utf8')) ?? []) as Partial<CopyChange>[];
+  return raw.map((c, i) => {
+    if (!c.file || !c.before || !c.after || !c.reason || !c.approved)
+      throw new Error(`${path}: entry ${i + 1} needs file, before, after, reason and approved`);
+    return c as CopyChange;
+  });
+}
+
+/** Apply approved changes to the baseline. Each `before` must appear exactly once. */
+export function applyCopyChanges(baseline: string, changes: CopyChange[]): string {
+  let out = baseline;
+  for (const c of changes) {
+    const n = out.split(c.before).length - 1;
+    if (n !== 1) throw new Error(`copy change for ${c.file}: "${c.before}" found ${n} times in the baseline (need 1)`);
+    out = out.replace(c.before, c.after);
+  }
+  return out;
+}
+
 export function checkVerbatim(contentMd: string, files: { path: string; text: string }[]) {
   const haystack = contentMd.split('\n').map(plain).join('\n');
   const missing: { file: string; text: string }[] = [];
@@ -60,9 +86,11 @@ export function checkVerbatim(contentMd: string, files: { path: string; text: st
 if (import.meta.url === `file://${process.argv[1]}`) {
   const args = process.argv.slice(2);
   const ref = args[args.indexOf('--ref') + 1];
-  const source = args.includes('--ref')
+  const baseline = args.includes('--ref')
     ? execFileSync('git', ['show', `${ref}:docs/CONTENT.md`], { encoding: 'utf8' })
     : readFileSync(args.includes('--source') ? args[args.indexOf('--source') + 1]! : 'docs/CONTENT.md', 'utf8');
+  const changes = loadCopyChanges();
+  const source = applyCopyChanges(baseline, changes);
 
   const paths = fg.sync('src/content/**/*.{yaml,mdx}').filter((p) => !p.endsWith('/ui.yaml')).sort();
   const missing = checkVerbatim(source, paths.map((p) => ({ path: p, text: readFileSync(p, 'utf8') })));
@@ -76,5 +104,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 
   for (const m of missing) console.error(`${m.file}: not in CONTENT.md: "${m.text}"`);
   if (missing.length) process.exit(1);
-  console.log(`check:verbatim: ${paths.length} files match CONTENT.md`);
+  console.log(`check:verbatim: ${paths.length} files match CONTENT.md (+ ${changes.length} approved change(s))`);
 }

@@ -22,8 +22,9 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **Contact line** reworded by you to two sentences; the triplet rule now ignores qualifier phrases ("especially…", "including…", "such as…", "mainly…", "mostly…", "particularly…", "like…").
 - **13 triplets** kept and acknowledged in `copy-lint.allow.yaml` with your reasons; 4 rewritten by you.
 - **Work happens on the `build` branch** (preview deploys); `main` moves to production only on your approval.
-- **SmartyPants off:** rendered text keeps the copy's exact characters (straight quotes), the same for MDX and YAML-sourced text.
-- **CONTENT.md retired** after migration (commit 315561c holds the last full version; `pnpm check:verbatim --ref 315561c`).
+- **SmartyPants off:** rendered text keeps the copy's exact characters (straight quotes), the same for MDX and YAML-sourced text. Approved 2026-11-23. If curly quotes are revisited during design, they apply to every page, and `check:verbatim` must treat straight and curly quotes as equal.
+- **CONTENT.md retired** after migration. Commit 315561c holds the last full version. `pnpm check:verbatim` (in `pnpm check`, CI fetches full history) compares the collections against it.
+- **Approved copy changes after migration** are logged in `docs/copy-changes.yaml` (before, after, reason, date) and applied to the baseline by `check:verbatim`. First entry: "That's why I built Strop, below." → "That's why I built Strop." with Strop linked to its case study, because the full case study lives on its own page.
 
 
 Throughline for every decision below: **I build AI agents and make them trustworthy.** The design treats the site like an evidence file: every claim sits next to the thing that backs it (a paper, a patent, a number, a demo).
@@ -504,7 +505,7 @@ Every milestone ends with the same gate, and I report each result to you:
 | 2 | **Schemas + migration.** All collections, copy moved verbatim, `check:verbatim` and `titles.lock`. Minimal unstyled render of every field on `/`. | Every CONTENT.md item appears once on the unstyled page; verbatim check passes. |
 | 3 | **Design system.** Tokens, fonts, base and prose CSS, `MarginNote`, `StatusStamp`, a dev-only `/_specimen` page (excluded from build output). Contrast checks. | Specimen screenshots in both schemes; AA contrast for every text/background pair. |
 | 4 | **Home: Intro + Personal Projects.** | Cards, badge, links, CV slot (verified by temporarily setting `cv`). |
-| 5 | **Home: Experience + Patents & Publications.** | Bold name, `*` marks, footnote, group order, patent shows only allowed fields. |
+| 5 | **Home: Experience + Patents & Publications.** Move the paper count ("3 papers") out of the group `h3` so screen readers don't read it as part of the heading (noted in M2 review). | Bold name, `*` marks, footnote, group order, patent shows only allowed fields; group headings contain only the heading text. |
 | 6 | **Home: Certifications + Contact + header/footer.** | `<details>` toggles work by keyboard; certs section is visibly lighter than projects. |
 | 7 | **Case study pages.** Prose layout, contents list, responsive games table, `<Media>` placeholders, reduced-motion behavior. | Table readable at 390 wide; placeholders visible; reduced-motion verified with Playwright's `reducedMotion: 'reduce'`. |
 | 8 | **SEO.** Per-page OG images, sitemap, canonical, meta descriptions (from blurbs/headline), 404. | I view each OG PNG; sitemap and canonicals use the env URL; switching `SITE_URL` locally changes all of them. |

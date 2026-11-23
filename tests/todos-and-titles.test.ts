@@ -54,3 +54,18 @@ describe('verbatim', () => {
     expect(checkVerbatim(src, [bad])).toHaveLength(1);
   });
 });
+
+describe('approved copy changes', () => {
+  it('applies a logged change to the baseline so the new copy passes', async () => {
+    const { applyCopyChanges, checkVerbatim } = await import('../scripts/check-verbatim');
+    const baseline = "That's why I built Strop, below.\n";
+    const site = [{ path: 't.mdx', text: "---\ntitle: T\n---\nThat's why I built [Strop](/projects/strop/).\n" }];
+    expect(checkVerbatim(baseline, site)).toHaveLength(1);
+    const change = { file: 't.mdx', before: "That's why I built Strop, below.", after: "That's why I built [Strop](/projects/strop/).", reason: 'r', approved: '2026-11-23' };
+    expect(checkVerbatim(applyCopyChanges(baseline, [change]), site)).toEqual([]);
+  });
+  it('refuses a change whose "before" is not in the baseline exactly once', async () => {
+    const { applyCopyChanges } = await import('../scripts/check-verbatim');
+    expect(() => applyCopyChanges('a', [{ file: 'f', before: 'b', after: 'c', reason: 'r', approved: 'd' }])).toThrow(/found 0 times/);
+  });
+});
