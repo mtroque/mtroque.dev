@@ -8,7 +8,8 @@ describe('check:domains', () => {
   });
   it('flags this project vercel.app hosts', () => {
     expect(findDomainHits('https://mtroque-dev.vercel.app')).toHaveLength(1);
-    expect(findDomainHits('mtroque-dev-git-main-mtroque.vercel.app')).toHaveLength(1);
+    expect(findDomainHits('mtroque-dev-git-main-bunny-budget.vercel.app')).toHaveLength(1);
+    expect(findDomainHits('https://mtroque-1vrnsnz3m-bunny-budget.vercel.app/')).toHaveLength(1);
   });
   it('allows the GitHub repo path and other projects', () => {
     expect(findDomainHits('https://github.com/mtroque/mtroque.dev')).toHaveLength(0);

@@ -4,7 +4,7 @@
  *
  * Flags:
  *   - mtroque.dev used as a host (https://mtroque.dev, www.mtroque.dev, @mtroque.dev, bare "mtroque.dev/")
- *   - this project's *.vercel.app hosts (mtroque-dev*.vercel.app)
+ *   - this project's *.vercel.app hosts (production mtroque-dev.vercel.app, previews mtroque-*-bunny-budget.vercel.app)
  * Allows:
  *   - the GitHub repo path "mtroque/mtroque.dev"
  *   - other projects' vercel.app hosts (e.g. the Tablekeeper app)
@@ -20,7 +20,7 @@ const TEXT = /\.(ts|tsx|js|mjs|cjs|astro|mdx?|ya?ml|json|css|html|svg|txt|xml)$/
 const OWN_HOST_PATTERNS: { name: string; re: RegExp }[] = [
   // any "mtroque.dev" host, except the GitHub repo path "mtroque/mtroque.dev"
   { name: 'mtroque.dev', re: /(?<![\w.-])(?<!mtroque\/)(?:www\.)?mtroque\.dev\b/gi },
-  { name: 'project vercel.app host', re: /\bmtroque-dev[a-z0-9-]*\.vercel\.app\b/gi },
+  { name: 'project vercel.app host', re: /\b(?:mtroque[a-z0-9-]*|[a-z0-9-]*bunny-budget)\.vercel\.app\b/gi },
 ];
 
 export function findDomainHits(text: string): { line: number; match: string; rule: string }[] {

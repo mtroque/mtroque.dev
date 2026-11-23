@@ -15,9 +15,7 @@ jobs:
       ASTRO_TELEMETRY_DISABLED: '1'
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 12.15.0
+      - uses: pnpm/action-setup@v4 # version from packageManager
       # Node comes from devEngines.runtime in package.json (pnpm downloads it).
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
