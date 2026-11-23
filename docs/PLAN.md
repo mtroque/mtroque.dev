@@ -27,6 +27,8 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **Approved copy changes after migration** are logged in `docs/copy-changes.yaml` (before, after, reason, date) and applied to the baseline by `check:verbatim`. First entry: "That's why I built Strop, below." → "That's why I built Strop." with Strop linked to its case study, because the full case study lives on its own page.
 - **/specimen/ on previews** (approved 2026-11-24): built in dev, on Vercel previews and with `SPECIMEN=1`; noindex, not in the sitemap; production builds never contain it (refused, with tests).
 - **Fonts** (2026-11-24): subset by `pnpm fonts` from upstream files pinned to a google/fonts commit and SHA-256. Latin + Latin-1, curly quotes, dashes, ellipsis, ✓, plus every character in the copy (`pnpm check:fonts` fails if new copy needs more). Serif: weights 400–650, optical sizes 12–48, no OpenType alternates (so lining numerals, no fi/fl ligatures). Only the serif file is preloaded; all faces use `font-display: swap`. Total 85.3 KB (serif 57.9, mono 400 13.5, mono 500 13.8).
+- **OpenType features** (2026-11-24): no CSS requests any. The serif subset's default figures are lining and equal-width; `pnpm check:font-features` shapes text to prove any requested feature changes glyphs, so faked small caps or ignored figure styles fail CI.
+- **Vercel scope** confirmed: `bunny-budget` is the slug of the personal Hobby account (the user's default team, OWNER); project `mtroque-dev` linked to `mtroque/mtroque.dev`.
 
 
 Throughline for every decision below: **I build AI agents and make them trustworthy.** The design treats the site like an evidence file: every claim sits next to the thing that backs it (a paper, a patent, a number, a demo).

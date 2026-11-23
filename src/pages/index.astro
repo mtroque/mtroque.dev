@@ -4,12 +4,12 @@ import Intro from '../components/Intro.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ExperienceOrg from '../components/ExperienceOrg.astro';
 import Patent from '../components/Patent.astro';
-import Paper from '../components/Paper.astro';
+import PubGroup from '../components/PubGroup.astro';
 import CertVendor from '../components/CertVendor.astro';
 import {
   getProfile, getUi, getProjects, getExperience, getPatents, getPublicationGroups, getCertificationsByVendor,
 } from '../lib/content';
-import { inline, plural } from '../lib/format';
+import { inline } from '../lib/format';
 
 const [profile, ui, projects, experience, patents, groups, certs] = await Promise.all([
   getProfile(), getUi(), getProjects(), getExperience(), getPatents(), getPublicationGroups(), getCertificationsByVendor(),
@@ -39,7 +39,7 @@ const [profile, ui, projects, experience, patents, groups, certs] = await Promis
       <p class="record__rail" aria-hidden="true">§2</p>
       <div class="record__body">
         <h2 id="experience-h">{ui.sections.experience}</h2>
-        {experience.map((o) => <ExperienceOrg org={o} />)}
+        <div class="orgs">{experience.map((o) => <ExperienceOrg org={o} />)}</div>
       </div>
     </section>
 
@@ -48,12 +48,7 @@ const [profile, ui, projects, experience, patents, groups, certs] = await Promis
       <div class="record__body">
         <h2 id="publications-h">{ui.sections.publications}</h2>
         {patents.map((p) => <Patent patent={p} />)}
-        {groups.map(({ group, papers }) => (
-          <section class="pub-group" aria-labelledby={`group-${group.id}`}>
-            <h3 id={`group-${group.id}`}>{group.data.heading} <span class="count">{plural(papers.length, ui.paperCount)}</span></h3>
-            {papers.map((paper) => <Paper paper={paper} />)}
-          </section>
-        ))}
+        {groups.map((g) => <PubGroup {...g} />)}
       </div>
     </section>
 
@@ -77,5 +72,5 @@ const [profile, ui, projects, experience, patents, groups, certs] = await Promis
 
 <style>
   .section-note { margin-top: var(--space-2); }
-  .projects { margin-top: var(--space-8); }
+  .projects, .orgs { margin-top: var(--space-8); }
 </style>

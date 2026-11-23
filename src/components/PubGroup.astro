@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUi } from '../lib/content';
+import { plural } from '../lib/format';
+import Paper from './Paper.astro';
+interface Props {
+  group: CollectionEntry<'publicationGroups'>;
+  papers: CollectionEntry<'publications'>[];
+}
+const { group, papers } = Astro.props;
+const ui = await getUi();
+const headingId = `group-${group.id}`;
+---
+<section class="pub-group" aria-labelledby={headingId}>
+  {/* The count sits beside the heading on its rule, outside the h3, so the heading is only its text. */}
+  <div class="pub-group__rule">
+    <h3 class="pub-group__heading" id={headingId}>{group.data.heading}</h3>
+    <p class="pub-group__count">{plural(papers.length, ui.paperCount)}</p>
+  </div>
+  {papers.map((paper) => <Paper paper={paper} />)}
+</section>
+
+<style>
+  .pub-group { margin-top: var(--space-12); }
+  /* Option (c): every group heading in the same mono size, weight from the rule, not the text length. */
+  .pub-group__rule {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--ink);
+  }
+  .pub-group__heading,
+  .pub-group__count {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    letter-spacing: var(--tracking-mono);
+    line-height: 1.4;
+  }
+  .pub-group__heading { font-weight: 500; }
+  .pub-group__count { color: var(--ink-muted); white-space: nowrap; }
+</style>

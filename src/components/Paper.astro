@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getUi } from '../lib/content';
+import MarginNote from './MarginNote.astro';
 interface Props { paper: CollectionEntry<'publications'> }
 const { data } = Astro.props.paper;
 const ui = await getUi();
@@ -8,22 +9,43 @@ const primary = data.links[0]!.url;
 const hasEqual = data.authors.some((a) => a.equal);
 ---
 <article class="paper">
-  <h4><a href={primary} rel="noopener">{data.title}</a></h4>
-  <p class="venue">{data.venue} · {data.location}</p>
-  <p class="authors">
+  <h4 class="paper__title"><a href={primary} rel="noopener">{data.title}</a></h4>
+  <MarginNote>{data.venue}<br />{data.location}</MarginNote>
+  <p class="paper__authors">
     {data.authors.map((a, i) => (
       <>
         {i > 0 && ', '}
-        {a.me ? <strong>{a.name}</strong> : a.name}
-        {a.equal && <sup aria-label={ui.equalContribution}>*</sup>}
+        <span class:list={['author', { 'author--me': a.me }]}>{a.name}</span>
+        {a.equal && <sup><span aria-hidden="true">*</span><span class="visually-hidden"> ({ui.equalContribution})</span></sup>}
       </>
     ))}
     {data.etAl && <>, {ui.etAl}</>}
-    {data.authorNote && <span class="author-note"> ({data.authorNote})</span>}
+    {data.authorNote && <span class="muted"> ({data.authorNote})</span>}
   </p>
-  <p class="summary">{data.summary}</p>
-  <ul class="paper-links">
+  <p class="paper__summary">{data.summary}</p>
+  <ul class="paper__links mono">
     {data.links.map((l) => <li><a href={l.url} rel="noopener">{l.label ?? ui.publicationLinks[l.kind]}</a></li>)}
   </ul>
-  {hasEqual && <p class="footnote"><sup>*</sup> {ui.equalContribution}</p>}
+  {hasEqual && <p class="paper__footnote mono muted" aria-hidden="true">* {ui.equalContribution}</p>}
 </article>
+
+<style>
+  .paper { margin-top: var(--space-8); }
+  .paper__title { font-size: var(--step-0); line-height: 1.35; }
+  .paper__title a { color: var(--ink); text-decoration-color: var(--rule); }
+  .paper__title a:hover { text-decoration-color: var(--accent); }
+  .paper__authors { margin-top: var(--space-2); font-size: 0.9375rem; color: var(--ink-muted); }
+  .author--me { color: var(--ink); font-weight: 650; }
+  .paper__authors sup { color: var(--ink); }
+  .paper__summary { margin-top: var(--space-3); }
+  .paper__links {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-6);
+  }
+  .paper__links a { display: inline-block; padding-block: var(--space-1); }
+  .paper__footnote { margin-top: var(--space-2); }
+</style>

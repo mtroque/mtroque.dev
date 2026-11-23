@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { getUi } from '../lib/content';
+import StatusStamp from './StatusStamp.astro';
 interface Props { patent: CollectionEntry<'patents'> }
 const { data } = Astro.props.patent;
 const ui = await getUi();
@@ -8,7 +9,27 @@ const ui = await getUi();
 // and this component renders only those.
 ---
 <article class="patent" id="patent">
-  <h3>{data.displayTitle}</h3>
-  <p class="official-title">{data.officialTitle}</p>
-  <p class="status">{ui.patentStatus[data.status]} · {data.offices.map((o) => o.office).join(', ')}</p>
+  <h3 class="patent__title">{data.displayTitle}</h3>
+  <p class="patent__official muted">{data.officialTitle}</p>
+  <p class="patent__status">
+    <StatusStamp text={ui.patentStatus[data.status]} />
+    <span class="mono muted">{data.offices.map((o) => o.office).join(', ')}</span>
+  </p>
 </article>
+
+<style>
+  .patent {
+    margin-top: var(--space-8);
+    padding: var(--space-4) 0 var(--space-6);
+    border-bottom: var(--hairline);
+  }
+  .patent__title { font-size: var(--step-1); }
+  .patent__official { margin-top: var(--space-2); font-size: 0.9375rem; line-height: 1.45; }
+  .patent__status {
+    margin-top: var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+  }
+</style>
