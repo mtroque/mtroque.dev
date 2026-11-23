@@ -17,6 +17,14 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **Q-T2:** Patchwork. Answered: "Can I rotate and flip a patch when I place it?" Not covered: "What's a good strategy for beginners?" The rules flow runs only with `pnpm media --rules`; normal runs reuse the saved capture. Both answers are checked when captured.
 - **Q-R1:** headings kept as written, balanced with option (c): same mono size and a paper count on each heading rule.
 
+## Decisions during build
+
+- **Contact line** reworded by you to two sentences; the triplet rule now ignores qualifier phrases ("especially…", "including…", "such as…", "mainly…", "mostly…", "particularly…", "like…").
+- **13 triplets** kept and acknowledged in `copy-lint.allow.yaml` with your reasons; 4 rewritten by you.
+- **Work happens on the `build` branch** (preview deploys); `main` moves to production only on your approval.
+- **SmartyPants off:** rendered text keeps the copy's exact characters (straight quotes), the same for MDX and YAML-sourced text.
+- **CONTENT.md retired** after migration (commit 315561c holds the last full version; `pnpm check:verbatim --ref 315561c`).
+
 
 Throughline for every decision below: **I build AI agents and make them trustworthy.** The design treats the site like an evidence file: every claim sits next to the thing that backs it (a paper, a patent, a number, a demo).
 
