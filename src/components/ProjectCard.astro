@@ -1,5 +1,6 @@
 ---
 import type { Project } from '../lib/content';
+import StatusStamp from './StatusStamp.astro';
 import { getUi } from '../lib/content';
 interface Props { project: Project }
 const { project } = Astro.props;
@@ -9,7 +10,7 @@ const href = `/projects/${project.id}/`;
 ---
 <article class="project-card" aria-labelledby={`project-${project.id}`}>
   <h3 id={`project-${project.id}`}><a href={href}>{data.title}</a> · <span class="tagline">{data.tagline}</span></h3>
-  {data.status === 'in-development' && <p class="status-stamp">{ui.projectStatus['in-development']}</p>}
+  {data.status === 'in-development' && <p><StatusStamp text={ui.projectStatus['in-development']} /></p>}
   <p>{data.blurb}</p>
   {data.stack.length > 0 && <p class="stack">{data.stack.join(' · ')}</p>}
   <ul class="project-links">

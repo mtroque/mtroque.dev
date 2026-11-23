@@ -1,0 +1,15 @@
+/* Long-form text: case studies, bio. Vertical rhythm from margins on following siblings. */
+@layer components {
+  .prose > * + * { margin-top: var(--space-4); }
+  .prose > h2 {
+    margin-top: var(--space-12);
+    padding-top: var(--space-4);
+    border-top: var(--hairline);
+  }
+  .prose > h2 + * { margin-top: var(--space-3); }
+  .prose ul, .prose ol { padding-left: 1.25em; }
+  .prose li + li { margin-top: var(--space-2); }
+  .prose li > ul, .prose li > ol { margin-top: var(--space-2); }
+  .prose li::marker { color: var(--ink-muted); }
+  .prose ol > li::marker { font-family: var(--font-mono); font-size: 0.85em; }
+}

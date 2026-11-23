@@ -11,13 +11,14 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "check:domains": "tsx scripts/check-domains.ts",
-    "check": "pnpm check:astro && pnpm check:domains && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
+    "check": "pnpm check:astro && pnpm check:domains && pnpm check:contrast && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
     "test": "vitest run",
     "screens": "tsx scripts/screens.ts",
     "todos": "tsx scripts/todos.ts",
     "lint:copy": "tsx scripts/copy-lint/index.ts",
     "check:titles": "tsx scripts/check-titles.ts",
-    "check:verbatim": "tsx scripts/check-verbatim.ts --ref 315561c"
+    "check:verbatim": "tsx scripts/check-verbatim.ts --ref 315561c",
+    "check:contrast": "tsx scripts/check-contrast.ts"
   },
   "devEngines": {
     "runtime": {
@@ -29,6 +30,8 @@
   "dependencies": {
     "@astrojs/mdx": "^8.1.6",
     "@astrojs/sitemap": "^3.7.6",
+    "@fontsource-variable/source-serif-4": "^5.3.1",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
     "@vercel/analytics": "^2.0.1",
     "astro": "^7.4.13",
     "marked": "^18.2.1"

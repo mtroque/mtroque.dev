@@ -1,0 +1,85 @@
+@layer reset, tokens, base, layout, components, utilities;
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  img, picture, video, svg { display: block; max-width: 100%; height: auto; }
+  input, button, textarea, select { font: inherit; }
+  p, li, h1, h2, h3, h4 { overflow-wrap: break-word; }
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 100%;
+    font-optical-sizing: auto;
+    line-height: var(--leading-body);
+    scroll-padding-top: var(--space-16);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  body {
+    font-size: var(--step-0);
+    min-height: 100vh;
+    font-kerning: normal;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+  }
+  h2 { font-size: var(--step-2); }
+  h3 { font-size: var(--step-1); }
+  h4 { font-size: var(--step-0); }
+  p, li { text-wrap: pretty; }
+
+  a {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  strong { font-weight: 650; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--paper-sunk);
+    padding: 0.05em 0.3em;
+    border-radius: 2px;
+  }
+  sup { font-size: 0.7em; line-height: 0; }
+  hr { border: 0; border-top: var(--hairline); }
+
+  ::selection { background: var(--accent); color: var(--paper); }
+}
+
+@layer utilities {
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+  /* Mono metadata: dates, venues, statuses, stack lines, counts. */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .muted { color: var(--ink-muted); }
+}

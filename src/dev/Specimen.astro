@@ -1,0 +1,57 @@
+---
+/**
+ * Design specimen (dev only). Uses real copy from the collections, no filler text.
+ */
+import Base from '../layouts/Base.astro';
+import MarginNote from '../components/MarginNote.astro';
+import StatusStamp from '../components/StatusStamp.astro';
+import { getProfile, getUi, getPublicationGroups } from '../lib/content';
+import { inline } from '../lib/format';
+
+const [profile, ui, groups] = await Promise.all([getProfile(), getUi(), getPublicationGroups()]);
+const paper = groups[1]!.papers[0]!.data;
+const swatches = ['paper', 'paper-sunk', 'ink', 'ink-muted', 'rule', 'accent'];
+---
+<Base title="Specimen" noindex>
+  <div class="page">
+    <section class="record">
+      <p class="record__rail">§0 Type</p>
+      <div class="record__body prose">
+        <p class="specimen-lede">{profile.headline}</p>
+        <h2>{ui.sections.projects} (h2, step 2)</h2>
+        <h3>{groups[0]!.group.data.heading} (h3, step 1)</h3>
+        <h4>{paper.title} (h4, step 0)</h4>
+        <MarginNote>{paper.venue} · {paper.location}</MarginNote>
+        <p set:html={inline(profile.bio[1]!)} />
+        <p class="mono muted">{paper.venue} · {paper.location} · {paper.year}</p>
+        <p>Inline <code>--no-verify</code> code, <strong>bold lead-in</strong>, a footnote mark<sup>*</sup>, numerals 99.3% (691 of 696).</p>
+        <ol><li>An edit-time Claude Code hook.</li><li>A lint rule.</li></ol>
+        <ul><li>skipped or loosened tests</li><li>summaries that claim success the transcript contradicts</li></ul>
+      </div>
+    </section>
+
+    <section class="record">
+      <p class="record__rail">§1 Stamps</p>
+      <div class="record__body">
+        <p><StatusStamp text={ui.patentStatus.pending} /> <StatusStamp text={ui.projectStatus['in-development']} /></p>
+      </div>
+    </section>
+
+    <section class="record">
+      <p class="record__rail">§2 Color</p>
+      <div class="record__body">
+        <ul class="swatches">
+          {swatches.map((s) => (
+            <li><span class="swatch" style={`background: var(--${s})`} /><code>--{s}</code></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .specimen-lede { font-size: var(--step-3); line-height: 1.2; font-weight: 500; }
+  .swatches { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--space-4); }
+  .swatch { display: block; height: 3rem; border: var(--hairline); margin-bottom: var(--space-2); }
+</style>

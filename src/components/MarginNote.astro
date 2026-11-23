@@ -1,0 +1,10 @@
+---
+/**
+ * Evidence beside the claim: floats into the right margin on wide screens,
+ * sits inline (small, mono) under its paragraph on phones.
+ * Place it immediately before the paragraph it annotates.
+ */
+interface Props { label?: string }
+const { label } = Astro.props;
+---
+<aside class="margin-note" aria-label={label}><slot /></aside>
