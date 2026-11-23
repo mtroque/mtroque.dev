@@ -111,6 +111,8 @@ function emDash(b: Block): Hit[] {
 
 const INTRO_PHRASE =
   /^(?:over|before|after|in|on|at|for|when|if|since|by|with|without|during|today|now|then|later|also|however|so|still|instead|here|there|again)\b/i;
+/** A part starting with one of these qualifies the item before it ("reliable, especially in …"); it isn't an item. */
+const QUALIFIER_START = /^(?:especially|including|such as|mainly|mostly|particularly|like)\b/i;
 /** A part starting with one of these opens a new clause; it can start a list but isn't a middle item. */
 const CLAUSE_START = /^(?:so|but|because|where|which|while|whose|who|when|although|though|since|unless|whereas)\b/i;
 const CONJ_START = /^(?:and|or)\s+/i;
@@ -122,7 +124,11 @@ const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
 
 /** Number of items in each coordinated list ("A, B and C" / "A, B, and C") in a clause. */
 function listSizes(clause: string): number[] {
-  const parts = clause.split(/,\s+/).map((p) => p.trim()).filter(Boolean);
+  // Qualifier phrases ("…, especially in X, …") attach to the previous item, so they aren't counted.
+  const parts = clause
+    .split(/,\s+/)
+    .map((p) => p.trim())
+    .filter((p, i) => p && (i === 0 || !QUALIFIER_START.test(p)));
   const sizes: number[] = [];
   let start = 0;
   if (parts.length > 1 && INTRO_PHRASE.test(parts[0]!) && words(parts[0]!) <= 5) start = 1;

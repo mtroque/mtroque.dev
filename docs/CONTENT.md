@@ -38,7 +38,7 @@ Section note (shown under the heading): Things I build on my own time, outside o
 
 ### 1. Tablekeeper · Board game companion
 
-**Card blurb (home page):** A phone companion for board games. It scores your board from a photo you confirm, answers rules questions with citations to the official rulebook, and keeps a history of your plays. Supports 4 games.
+**Card blurb (home page):** A phone companion for board games. Photograph your finished board and it drafts the score for you to confirm; ask a rules question and it answers with citations to the official rulebook. It also keeps a history of your plays across 4 supported games.
 
 **Links:** Live app https://tablekeeper-beryl.vercel.app · Source https://github.com/mtroque/tablekeeper
 **Stack:** TypeScript, Next.js, Express, Postgres (Neon), opencv.js, Claude API, Vercel
@@ -98,7 +98,7 @@ Most of these never came up as a correction, because nobody saw them happen. Tha
 
 ### 2. Strop · Turning coding-agent workarounds into hard checks
 
-**Card blurb (home page):** Reads coding agents' session transcripts to find the workarounds they didn't mention, turns each finding into the strongest check that fits, and measures whether it worked.
+**Card blurb (home page):** Finds the workarounds coding agents didn't mention by reading their session transcripts. Each finding becomes the strongest check that fits, and Strop keeps measuring whether it worked.
 
 **Links:** Source https://github.com/mtroque/strop
 **Status:** In development.
@@ -160,7 +160,7 @@ Section note: I build multi-agent systems for financial services clients. Client
 - **AI governance "front door"** · major insurer
   An agentic platform that every new AI platform, model or solution passes through before it can be used in the organization. It handles the required governance documentation and gets the necessary approvals.
 - **Regulatory change assistant**
-  A multi-agent assistant that reads new regulations, checks them against an organization's current policies and controls, and works out what's affected and what has to change to stay compliant.
+  A multi-agent assistant that reads new regulations and checks them against an organization's current policies and controls, to work out what's affected and what has to change to stay compliant.
 
 ### Samsung Research
 AI Engineer · June 2024–May 2026 · Taguig, Philippines
@@ -260,4 +260,4 @@ Display my name in bold in author lists, and show equal-contribution marks.
 
 ## Contact
 
-Email is the best way to reach me: roquematthewc@gmail.com. I'm happy to talk about making agents reliable, AI in regulated industries, or research collaborations.
+Email is the best way to reach me: roquematthewc@gmail.com. I'm happy to talk about making agents reliable, especially in regulated industries. I'm also open to research collaborations.

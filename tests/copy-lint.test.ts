@@ -67,6 +67,8 @@ describe('triplet', () => {
     'On my labeled test photos, the detector found the board every time and read 99.3% of values correctly for Patchwork (691 of 696) and 98.7% for Harmonies (148 of 150).',
     'Photo scoring for Azul, whose printed board makes empty and filled spaces look alike',
     'Agent session transcripts, plus the gap between what an agent committed and what was eventually merged.',
+    "I'm happy to talk about making agents reliable, especially in regulated industries, and about research collaborations.",
+    'We test agents, including browser agents, and chatbots.',
     'Cats and dogs.',
     'A, B, C, and D.',
   ])('does not flag %s', (s) => expect(tripletCount(s)).toBe(0));

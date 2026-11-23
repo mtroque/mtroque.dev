@@ -5,3 +5,61 @@
 - rule: closing-restatement
   sentence: 'Over time, more of the guardrails are deterministic, and "done" can be trusted more.'
   reason: The point of the section. Kept on purpose (review 2026-11-23).
+
+# Review 2026-11-23: triplets kept from CONTENT.md
+- rule: triplet
+  sentence: Before PwC, I spent two years at Samsung Research, building chatbots
+    used by customers and repair technicians around the world, and publishing
+    research on how training data shapes language models.
+  reason: False positive; the main clause is counted as an item.
+- rule: triplet
+  sentence: The app drafts the board state, you check and correct it, and it
+    calculates the score with a breakdown you can tap to see which spaces earned
+    what.
+  reason: The three actual steps of the photo flow.
+- rule: triplet
+  sentence: Rulebooks are short and structured, so instead of a vector store it
+    gets the table of contents, keyword search and whole sections, and decides
+    what to read next.
+  reason: The three tools the agent actually has.
+- rule: triplet
+  sentence: I write the specs, acceptance criteria and test fixtures; coding
+    agents (Claude Code, plus Google's Antigravity) do most of the building.
+  reason: The three artifacts I write.
+- rule: triplet
+  sentence: "A headless factory runs on GitHub Actions: an agent picks up the next
+    ready issue and opens a PR, a second agent reviews it, and findings go back
+    to the first agent for up to two fix rounds."
+  reason: The three stages of the factory loop.
+- rule: triplet
+  sentence: A rejected commit scope was silently dropped, a security warning was
+    retried past instead of reported, and a missing tool was replaced with an
+    improvised copy.
+  reason: Three observed incidents.
+- rule: triplet
+  sentence: More games (Vale of Eternity, Flamecraft, Splendor) and the Harmonies
+    expansion
+  reason: Three real game names.
+- rule: triplet
+  sentence: A CLAUDE.md rule, used only for judgment calls no check can express,
+    and labeled as such.
+  reason: False positive; two descriptions of one rule.
+- rule: triplet
+  sentence: "Catching agents that weaken tests: goodhart, narc and noskip."
+  reason: Three named tools.
+- rule: triplet
+  sentence: An agentic platform that every new AI platform, model or solution
+    passes through before it can be used in the organization.
+  reason: The scope wording the platform uses for what it governs.
+- rule: triplet
+  sentence: The documents cover software development, testing, and internal
+    process and compliance.
+  reason: The three document categories the automation produced.
+- rule: triplet
+  sentence: We compared crowdsourcing, web crawling and image generation as ways
+    to collect culturally relevant images, and released 1.28M of them.
+  reason: The three collection methods the paper compared.
+- rule: triplet
+  sentence: Simple text helps linguistic tasks, complex text helps world-knowledge
+    tasks, and fine-tuning results barely change.
+  reason: Three measured results from the paper.
