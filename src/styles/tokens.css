@@ -16,7 +16,7 @@
     --paper-sunk: #f2efe6;
 
     /* Type */
-    --font-serif: 'Source Serif 4 Variable', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+    --font-serif: 'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
     --step--1: 0.8125rem; /* 13px: mono metadata */

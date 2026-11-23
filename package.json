@@ -11,14 +11,16 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "check:domains": "tsx scripts/check-domains.ts",
-    "check": "pnpm check:astro && pnpm check:domains && pnpm check:contrast && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
+    "check": "pnpm check:astro && pnpm check:domains && pnpm check:contrast && pnpm check:fonts && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
     "test": "vitest run",
     "screens": "tsx scripts/screens.ts",
     "todos": "tsx scripts/todos.ts",
     "lint:copy": "tsx scripts/copy-lint/index.ts",
     "check:titles": "tsx scripts/check-titles.ts",
     "check:verbatim": "tsx scripts/check-verbatim.ts --ref 315561c",
-    "check:contrast": "tsx scripts/check-contrast.ts"
+    "check:contrast": "tsx scripts/check-contrast.ts",
+    "fonts": "tsx scripts/fonts.ts",
+    "check:fonts": "tsx scripts/fonts.ts --check"
   },
   "devEngines": {
     "runtime": {
@@ -30,8 +32,6 @@
   "dependencies": {
     "@astrojs/mdx": "^8.1.6",
     "@astrojs/sitemap": "^3.7.6",
-    "@fontsource-variable/source-serif-4": "^5.3.1",
-    "@fontsource/ibm-plex-mono": "^5.3.0",
     "@vercel/analytics": "^2.0.1",
     "astro": "^7.4.13",
     "marked": "^18.2.1"
@@ -40,12 +40,14 @@
     "@astrojs/check": "^0.9.12",
     "@types/mdast": "^4.0.4",
     "fast-glob": "^3.3.3",
+    "fontkit": "^3.0.0",
     "mdast-util-to-string": "^4.0.0",
     "playwright": "^1.65.1",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-mdx": "^3.1.1",
     "remark-parse": "^11.0.0",
+    "subset-font": "^2.9.0",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "unified": "^11.0.5",
