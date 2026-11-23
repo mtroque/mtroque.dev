@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "check:astro": "astro check",
     "check:domains": "tsx scripts/check-domains.ts",
-    "check": "pnpm check:astro && pnpm check:domains && pnpm check:contrast && pnpm check:fonts && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
+    "check": "pnpm check:astro && pnpm check:domains && pnpm check:contrast && pnpm check:fonts && pnpm check:font-features && pnpm check:titles && pnpm check:verbatim && pnpm lint:copy && pnpm test && pnpm todos",
     "test": "vitest run",
     "screens": "tsx scripts/screens.ts",
     "todos": "tsx scripts/todos.ts",
@@ -20,7 +20,8 @@
     "check:verbatim": "tsx scripts/check-verbatim.ts --ref 315561c",
     "check:contrast": "tsx scripts/check-contrast.ts",
     "fonts": "tsx scripts/fonts.ts",
-    "check:fonts": "tsx scripts/fonts.ts --check"
+    "check:fonts": "tsx scripts/fonts.ts --check",
+    "check:font-features": "tsx scripts/check-font-features.ts"
   },
   "devEngines": {
     "runtime": {
