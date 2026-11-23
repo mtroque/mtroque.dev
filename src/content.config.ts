@@ -51,6 +51,7 @@ const ui = defineCollection({
     backHome: z.string(),
     navLabel: z.string(),
     tocLabel: z.string(),
+    profileLinksLabel: z.string(),
   }),
 });
 

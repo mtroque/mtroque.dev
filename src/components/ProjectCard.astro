@@ -1,21 +1,66 @@
 ---
 import type { Project } from '../lib/content';
-import StatusStamp from './StatusStamp.astro';
 import { getUi } from '../lib/content';
+import StatusStamp from './StatusStamp.astro';
 interface Props { project: Project }
 const { project } = Astro.props;
 const { data } = project;
 const ui = await getUi();
 const href = `/projects/${project.id}/`;
+const headingId = `project-${project.id}`;
 ---
-<article class="project-card" aria-labelledby={`project-${project.id}`}>
-  <h3 id={`project-${project.id}`}><a href={href}>{data.title}</a> · <span class="tagline">{data.tagline}</span></h3>
-  {data.status === 'in-development' && <p><StatusStamp text={ui.projectStatus['in-development']} /></p>}
-  <p>{data.blurb}</p>
-  {data.stack.length > 0 && <p class="stack">{data.stack.join(' · ')}</p>}
-  <ul class="project-links">
+<article class="project-card" aria-labelledby={headingId}>
+  <header class="project-card__head">
+    <h3 id={headingId}>
+      <a href={href}>{data.title}</a><span class="project-card__tagline"> · {data.tagline}</span>
+    </h3>
+    {data.status === 'in-development' && <StatusStamp text={ui.projectStatus['in-development']} />}
+  </header>
+  <p class="project-card__blurb">{data.blurb}</p>
+  {data.stack.length > 0 && (
+    <p class="mono muted project-card__stack">
+      {data.stack.map((s, i) => <>{i > 0 && ' · '}<span class="nowrap">{s}</span></>)}
+    </p>
+  )}
+  <ul class="project-card__links mono">
+    <li><a href={href}>{ui.projectLinks.caseStudy}</a></li>
     {data.links.live && <li><a href={data.links.live} rel="noopener">{ui.projectLinks.live}</a></li>}
     {data.links.source && <li><a href={data.links.source} rel="noopener">{ui.projectLinks.source}</a></li>}
-    <li><a href={href}>{ui.projectLinks.caseStudy}</a></li>
   </ul>
 </article>
+
+<style>
+  .project-card {
+    border: var(--hairline);
+    border-radius: 2px;
+    padding: var(--space-4);
+  }
+  @media (min-width: 40rem) {
+    .project-card { padding: var(--space-6); }
+  }
+  .nowrap { white-space: nowrap; }
+  .project-card + .project-card { margin-top: var(--space-6); }
+  .project-card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+  }
+  .project-card__head h3 { font-size: var(--step-1); }
+  .project-card__head h3 a { color: var(--ink); text-decoration-color: var(--rule); }
+  .project-card__head h3 a:hover { text-decoration-color: var(--accent); }
+  .project-card__tagline { font-weight: 400; color: var(--ink-muted); }
+  .project-card__blurb { margin-top: var(--space-3); }
+  .project-card__stack { margin-top: var(--space-3); }
+  .project-card__links {
+    list-style: none;
+    padding: var(--space-3) 0 0;
+    margin-top: var(--space-4);
+    border-top: var(--hairline);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+  }
+  .project-card__links a { display: inline-block; padding-block: var(--space-1); }
+</style>
