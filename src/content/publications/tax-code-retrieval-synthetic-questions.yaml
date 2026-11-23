@@ -1,0 +1,18 @@
+# Never edit the title (titles.lock).
+title: "Legal Information Retrieval through Embedding Models and Synthetic Question Generation: Insights from the Philippine Tax Code"
+group: tax-law-retrieval
+order: 1
+venue: PACLIC 38, 2024
+location: Tokyo, Japan
+year: 2024
+authors:
+  - name: Matthew Roque
+    me: true
+  - name: Nicole Abejuela
+  - name: Shirley Chu
+  - name: Melvin Cabatuan
+  - name: Edwin Sybingco
+links:
+  - kind: acl
+    url: https://aclanthology.org/2024.paclic-1.35/
+summary: We tested ways to improve embedding-based search over the Philippine tax code. Splitting its 311 sections into 826 smaller subsections clearly improved retrieval, while matching user questions to LLM-generated synthetic questions did not.

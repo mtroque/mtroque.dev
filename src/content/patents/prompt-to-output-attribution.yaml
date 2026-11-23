@@ -1,0 +1,10 @@
+# Until `published: true` (only after the application is confirmed published), the schema
+# rejects numbers, URLs and a description. Only titles, status and office names are shown.
+displayTitle: Attention-Based Prompt-to-Output Attribution for Generative AI
+officialTitle: Method and Electronic Apparatus for Providing Prompt-to-Output Attribution Interface
+status: pending
+published: false
+offices:
+  - office: USPTO
+  - office: KIPO
+  - office: IPOPHL

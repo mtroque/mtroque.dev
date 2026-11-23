@@ -1,0 +1,40 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Media from '../../components/Media.astro';
+import { getProfile, getProjects, getUi, type Project } from '../../lib/content';
+
+export async function getStaticPaths() {
+  return (await getProjects()).map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props { project: Project }
+const { project } = Astro.props;
+const { data } = project;
+const [{ Content, headings }, ui, profile] = await Promise.all([render(project), getUi(), getProfile()]);
+const sections = headings.filter((h) => h.depth === 2);
+---
+<Base title={`${data.title} · ${profile.name}`} description={data.blurb}>
+  <header class="site-header">
+    <a href="/">{ui.backHome}</a>
+  </header>
+  <main>
+    <article class="case-study">
+      <header>
+        <h1>{data.title}</h1>
+        <p class="tagline">{data.tagline}</p>
+        {data.status === 'in-development' && <p class="status-stamp">{ui.projectStatus['in-development']}</p>}
+        <p class="lede">{data.blurb}</p>
+        <ul class="project-links">
+          {data.links.live && <li><a href={data.links.live} rel="noopener">{ui.projectLinks.live}</a></li>}
+          {data.links.source && <li><a href={data.links.source} rel="noopener">{ui.projectLinks.source}</a></li>}
+        </ul>
+        {data.stack.length > 0 && <p class="stack">{data.stack.join(' · ')}</p>}
+      </header>
+      <nav class="toc" aria-label={ui.tocLabel}>
+        <ul>{sections.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
+      </nav>
+      <Content components={{ Media }} />
+    </article>
+  </main>
+</Base>

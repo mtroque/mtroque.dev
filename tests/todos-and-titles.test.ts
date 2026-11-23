@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { findTodos } from '../scripts/todos';
+import { findMediaGaps, findTodos } from '../scripts/todos';
 import { scanBuiltOutput } from '../src/integrations/todo-gate';
-import { compareTitles, titlesFromContentMd } from '../scripts/check-titles';
+import { compareTitles, titlesFromCollections } from '../scripts/check-titles';
 
 describe('todos', () => {
   it('finds TODOs with file and line', () => {
@@ -12,6 +12,13 @@ describe('todos', () => {
       { file: 'f.md', line: 2, text: 'headshot' },
       { file: 'f.md', line: 2, text: 'CV link' },
     ]);
+  });
+  it('ignores template code that builds a TODO', () => {
+    expect(findTodos('<p>[[TODO: {label}: {item.description}]]</p>', 'M.astro')).toEqual([]);
+  });
+  it('lists media items without a file at their frontmatter line', () => {
+    const mdx = '---\ntitle: T\nmedia:\n  - id: a\n    kind: gif\n    description: photo flow\n  - id: b\n    kind: screenshot\n    description: done\n    src: ./b.png\n---\nBody';
+    expect(findMediaGaps(mdx, 'p.mdx')).toEqual([{ file: 'p.mdx', line: 4, text: 'GIF: photo flow' }]);
   });
   it('ignores the format example', () => {
     expect(findTodos('Use `[[TODO: ...]]` for gaps.', 'f.md')).toEqual([]);
@@ -26,22 +33,24 @@ describe('todos', () => {
 });
 
 describe('titles', () => {
-  const md = [
-    '## Selected Patents & Publications',
-    '### Patent',
-    '- **Official title (shown smaller, beneath):** Method and Apparatus',
-    '### Group',
-    '**Paper One: A Study**',
-    '- Venue: X',
-    '## Contact',
-    '**Not a title**',
-  ].join('\n');
-
-  it('extracts the official title and paper titles only', () => {
-    expect(titlesFromContentMd(md)).toEqual(['Method and Apparatus', 'Paper One: A Study']);
+  it('reads every paper title and patent official title from the collections', () => {
+    const titles = titlesFromCollections();
+    expect(titles).toHaveLength(8);
+    expect(titles).toContain('Data-centric Advanced Knowledge Interface for Legal Archives');
   });
   it('reports edited and missing titles', () => {
     expect(compareTitles(['Paper One: A Study'], ['Paper One: a study'])).toHaveLength(2);
     expect(compareTitles(['A'], ['A'])).toEqual([]);
+  });
+});
+
+describe('verbatim', () => {
+  it('ignores Markdown syntax and catches rewording', async () => {
+    const { checkVerbatim } = await import('../scripts/check-verbatim');
+    const src = '**The problem**\n- **Bold.** Text with `code` and [a link](https://x.y).\n';
+    const ok = { path: 'a.mdx', text: '---\ntitle: The problem\n---\n## The problem\n\n- **Bold.** Text with `code` and [a link](https://x.y).\n' };
+    expect(checkVerbatim(src, [ok])).toEqual([]);
+    const bad = { path: 'b.yaml', text: 'summary: Text with code and a lnk.' };
+    expect(checkVerbatim(src, [bad])).toHaveLength(1);
   });
 });

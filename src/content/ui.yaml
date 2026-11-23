@@ -1,0 +1,45 @@
+# UI strings. New copy here is linted like everything else.
+nav:
+  - label: Projects
+    href: /#projects
+  - label: Experience
+    href: /#experience
+  - label: Research
+    href: /#publications
+  - label: Certifications
+    href: /#certifications
+  - label: Contact
+    href: /#contact
+sections:
+  projects: Personal Projects
+  experience: Experience
+  publications: Selected Patents & Publications
+  certifications: Certifications
+  contact: Contact
+projectLinks:
+  live: Live app
+  source: Source
+  caseStudy: Read the case study
+projectStatus:
+  live: Live
+  in-development: In development
+present: present
+patentStatus:
+  pending: Patent pending
+  granted: Granted
+etAl: et al.
+equalContribution: Equal contribution
+paperCount:
+  one: "{n} paper"
+  other: "{n} papers"
+publicationLinks:
+  acl: ACL Anthology
+  arxiv: arXiv
+  ieee: IEEE Xplore
+  pdf: PDF
+  other: Link
+moreToggle: + {n} more
+cvLink: CV (PDF)
+backHome: Matthew Roque
+navLabel: Sections
+tocLabel: On this page

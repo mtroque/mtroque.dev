@@ -1,0 +1,20 @@
+---
+import type { Project } from '../lib/content';
+import { getUi } from '../lib/content';
+interface Props { project: Project }
+const { project } = Astro.props;
+const { data } = project;
+const ui = await getUi();
+const href = `/projects/${project.id}/`;
+---
+<article class="project-card" aria-labelledby={`project-${project.id}`}>
+  <h3 id={`project-${project.id}`}><a href={href}>{data.title}</a> · <span class="tagline">{data.tagline}</span></h3>
+  {data.status === 'in-development' && <p class="status-stamp">{ui.projectStatus['in-development']}</p>}
+  <p>{data.blurb}</p>
+  {data.stack.length > 0 && <p class="stack">{data.stack.join(' · ')}</p>}
+  <ul class="project-links">
+    {data.links.live && <li><a href={data.links.live} rel="noopener">{ui.projectLinks.live}</a></li>}
+    {data.links.source && <li><a href={data.links.source} rel="noopener">{ui.projectLinks.source}</a></li>}
+    <li><a href={href}>{ui.projectLinks.caseStudy}</a></li>
+  </ul>
+</article>

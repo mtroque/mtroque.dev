@@ -1,0 +1,10 @@
+# Group order on the page is set by `order`.
+- id: sea-vision-language
+  heading: Vision-Language Data for Southeast Asia
+  order: 1
+- id: text-complexity
+  heading: Text Complexity in Pretraining
+  order: 2
+- id: tax-law-retrieval
+  heading: Retrieval for Philippine Tax Law
+  order: 3

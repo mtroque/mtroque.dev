@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUi } from '../lib/content';
+interface Props {
+  vendor: CollectionEntry<'certVendors'>;
+  featured: CollectionEntry<'certifications'>[];
+  more: CollectionEntry<'certifications'>[];
+}
+const { vendor, featured, more } = Astro.props;
+const ui = await getUi();
+---
+<div class="cert-vendor">
+  <h3>{vendor.data.name}</h3>
+  <ul class="certs">{featured.map((c) => <li>{c.data.name}</li>)}</ul>
+  {more.length > 0 && (
+    <details>
+      <summary>{ui.moreToggle.replace('{n}', String(more.length))}</summary>
+      <ul class="certs">{more.map((c) => <li>{c.data.name}</li>)}</ul>
+    </details>
+  )}
+</div>

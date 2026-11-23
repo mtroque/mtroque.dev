@@ -1,0 +1,12 @@
+- id: anthropic
+  name: Anthropic (Claude)
+  order: 1
+- id: aws
+  name: AWS
+  order: 2
+- id: microsoft
+  name: Microsoft
+  order: 3
+- id: google-cloud
+  name: Google Cloud
+  order: 4

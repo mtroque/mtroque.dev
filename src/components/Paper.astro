@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUi } from '../lib/content';
+interface Props { paper: CollectionEntry<'publications'> }
+const { data } = Astro.props.paper;
+const ui = await getUi();
+const primary = data.links[0]!.url;
+const hasEqual = data.authors.some((a) => a.equal);
+---
+<article class="paper">
+  <h4><a href={primary} rel="noopener">{data.title}</a></h4>
+  <p class="venue">{data.venue} · {data.location}</p>
+  <p class="authors">
+    {data.authors.map((a, i) => (
+      <>
+        {i > 0 && ', '}
+        {a.me ? <strong>{a.name}</strong> : a.name}
+        {a.equal && <sup aria-label={ui.equalContribution}>*</sup>}
+      </>
+    ))}
+    {data.etAl && <>, {ui.etAl}</>}
+    {data.authorNote && <span class="author-note"> ({data.authorNote})</span>}
+  </p>
+  <p class="summary">{data.summary}</p>
+  <ul class="paper-links">
+    {data.links.map((l) => <li><a href={l.url} rel="noopener">{l.label ?? ui.publicationLinks[l.kind]}</a></li>)}
+  </ul>
+  {hasEqual && <p class="footnote"><sup>*</sup> {ui.equalContribution}</p>}
+</article>

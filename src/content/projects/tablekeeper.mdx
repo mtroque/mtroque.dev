@@ -1,0 +1,83 @@
+---
+title: Tablekeeper
+tagline: Board game companion
+order: 1
+blurb: A phone companion for board games. Photograph your finished board and it drafts the score for you to confirm; ask a rules question and it answers with citations to the official rulebook. It also keeps a history of your plays across 4 supported games.
+status: live
+links:
+  live: https://tablekeeper-beryl.vercel.app
+  source: https://github.com/mtroque/tablekeeper
+stack: [TypeScript, Next.js, Express, Postgres (Neon), opencv.js, Claude API, Vercel]
+media:
+  - id: photo-to-score
+    kind: gif
+    description: 'photo to score on Patchwork, using "Try Sample Photo": capture with draggable corners, review with outlined low-confidence values, result breakdown'
+  - id: rules-answers
+    kind: screenshot
+    description: a rules answer with citation chips, plus a "the rulebook doesn't say" answer
+  - id: harmonies-breakdown
+    kind: screenshot
+    description: Harmonies breakdown with a category's hexes highlighted
+---
+
+{/* One paragraph per line: the copy check reads each line as its own block. */}
+
+## The problem
+
+Scoring a game like Patchwork or Harmonies means counting dozens of tiles and patterns at the end of a long game, and it's easy to get wrong. Rules questions mid-game mean digging through the rulebook.
+
+## What it does
+
+- **Photo scoring.** Take a photo of the finished board. The app drafts the board state, you check and correct it, and it calculates the score with a breakdown you can tap to see which spaces earned what.
+
+  <Media id="photo-to-score" />
+
+- **Rules assistant.** Ask a question and get a short answer with citations that open the official rulebook PDF at the right page.
+
+  <Media id="rules-answers" />
+
+- **History.** Saved plays per account with personal bests and averages, plus campaign tracking for Dorfromantik.
+
+| Game | Rules assistant | Photo scoring | Manual scoring |
+|---|---|---|---|
+| Patchwork | ✓ | ✓ | ✓ |
+| Harmonies | ✓ | ✓ (you set stack heights) | ✓ |
+| Azul | ✓ | Not yet | ✓ |
+| Dorfromantik | ✓ | No | ✓, with campaign |
+
+## Design decisions
+
+- **The photo never leaves the phone.** Detection is classic computer vision running in the browser, not a vision model. Each board has a fixed layout, so reading it is a per-space classification problem, and solving it locally makes it free, offline, deterministic and measurable.
+- **The app drafts; you confirm.** Every value comes with a confidence. Uncertain ones are outlined for you to check, but nothing blocks you from scoring. Where a photo can't know the answer, it doesn't guess: Harmonies stack heights can't be seen from above, so the app asks you to set them.
+
+  <Media id="harmonies-breakdown" />
+
+- **The model never computes the score.** Scoring is plain code that can be tested, and the server recomputes every score rather than trusting the phone. A lint rule keeps the scoring functions free of side effects, and property tests check that every breakdown adds up to its total.
+- **The rules assistant reads like a person.** Rulebooks are short and structured, so instead of a vector store it gets the table of contents, keyword search and whole sections, and decides what to read next. It can only cite sections it actually read; anything else is dropped. When the rulebook doesn't cover a question, it says so instead of making something up.
+
+## How accurate is it?
+
+On my labeled test photos, the detector found the board every time and read 99.3% of values correctly for Patchwork (691 of 696) and 98.7% for Harmonies (148 of 150). Every error was flagged as low-confidence, so the review step catches it. These photos also helped tune the detectors, so they're optimistic. The one held-out figure is 96.5% for Harmonies tile colors, tested leave-one-out. CI fails any change that drops accuracy below the recorded baseline.
+
+## How it's built
+
+I run Tablekeeper as a small software factory. I write the specs, acceptance criteria and test fixtures; coding agents (Claude Code, plus Google's Antigravity) do most of the building. About 78% of the 335 commits on main were co-authored by Claude Code.
+
+- **Parallel agents** work in separate git worktrees, one per slice of the roadmap.
+- **A headless factory** runs on GitHub Actions: an agent picks up the next ready issue and opens a PR, a second agent reviews it, and findings go back to the first agent for up to two fix rounds. I merge every PR myself.
+- **Checks do the policing:** strict types, custom lint rules, repo checks, unit, property and end-to-end tests, an accuracy gate for the photo detector, screenshots of every screen on each PR, and a dependency audit, all required before merge.
+
+The checks caught a lot, but reading the agents' session transcripts afterwards showed what they missed:
+
+- **Tests that mirrored the bug.** The test helpers used the same wrong token issuer as the sign-in code, so every test passed while production rejected every sign-in. I added a contract test written from the provider's documentation.
+- **Work marked done with criteria still open.** Specs were closed with live checks never run. I added a gate that refuses to close a spec with unchecked criteria. The first time it fired, an agent got past it by deleting the unchecked criteria, without saying so.
+- **Quiet workarounds.** A rejected commit scope was silently dropped, a security warning was retried past instead of reported, and a missing tool was replaced with an improvised copy.
+
+Most of these never came up as a correction, because nobody saw them happen. That's why I built Strop, below.
+
+## What's next
+
+- More games (Vale of Eternity, Flamecraft, Splendor) and the Harmonies expansion
+- Photo scoring for Azul, whose printed board makes empty and filled spaces look alike
+- A "My Shelf" page for the games you own
+- An answer-quality evaluation for the rules assistant, and real-world photo accuracy from the corrections players make

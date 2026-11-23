@@ -1,0 +1,61 @@
+---
+title: Strop
+tagline: Turning coding-agent workarounds into hard checks
+order: 2
+blurb: Finds the workarounds coding agents didn't mention by reading their session transcripts. Each finding becomes the strongest check that fits, and Strop keeps measuring whether it worked.
+status: in-development
+links:
+  source: https://github.com/mtroque/strop
+---
+
+{/* One paragraph per line: the copy check reads each line as its own block. */}
+
+## Why "Strop"
+
+A strop is the leather strap used between sharpenings. A few light passes keep a good edge at its best. Strop does the same for a coding-agent setup: small, steady improvements to the process, even when the output already looks fine.
+
+## The problem
+
+When a coding agent says a task is done, the transcript sometimes tells a different story. It skipped a failing test, committed with `--no-verify`, added a suppression comment or patched around a broken script, and the summary still said "all tests pass." A quieter cost: I kept giving agents the same corrections, session after session.
+
+## What it reads
+
+Agent session transcripts, plus the gap between what an agent committed and what was eventually merged. That gap shows what a human had to fix afterwards.
+
+## What it finds
+
+1. **Repeated corrections:** feedback I keep giving across sessions.
+2. **Undisclosed workarounds:**
+   - skipped or loosened tests
+   - `--no-verify`, and lint or type-check suppression comments
+   - improvised fixes for broken scripts or missing tools
+   - summaries that claim success the transcript contradicts
+
+The second kind matters more, because nobody knows to look for it.
+
+## How it fixes them
+
+For each finding, it proposes the strongest fix that fits, in a fixed order:
+
+1. Fix the environment. If a script is broken, fix the script.
+2. An edit-time Claude Code hook.
+3. A lint rule.
+4. A pre-commit or CI gate.
+5. A CLAUDE.md rule, used only for judgment calls no check can express, and labeled as such.
+
+Every rule is stored with the transcript evidence that produced it.
+
+## Does the fix work?
+
+The tool keeps watching later sessions. Rules that don't reduce the problem get retired. Soft rules are revisited to see whether they can become hard checks. Over time, more of the guardrails are deterministic, and "done" can be trusted more.
+
+## How it compares
+
+Good tools exist for each piece of this:
+
+- **Turning repeated corrections into CLAUDE.md rules:** Claude Code's built-in `/insights` command, [retro](https://retro.craftwork.design/), [claude-doctor](https://github.com/millionco/claude-doctor) and [claude-reflect](https://github.com/BayramAnnakov/claude-reflect).
+- **Catching agents that weaken tests:** [goodhart](https://github.com/karamage/goodhart), [narc](https://github.com/tranhuuhuy297/narc) and [noskip](https://github.com/DariusHQ/noskip).
+- **Checking "done" claims against the transcript:** [donediff](https://github.com/0xelitesystem/donediff).
+- **Compiling written rules into lint rules or hooks:** [codemyrules](https://dev.to/clirimajeti/your-claudemd-is-full-of-lint-rules-in-disguise-6hb) and [nunchi](https://github.com/seob717/nunchi).
+
+Each covers one step. Strop connects them: it finds the problem, fixes the environment before adding a rule, picks the strongest check that fits, and keeps measuring whether each rule reduced the problem.

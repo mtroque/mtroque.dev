@@ -1,0 +1,24 @@
+---
+/**
+ * <Media id="…" /> inside a case study. Finds the item in the current project's `media` list.
+ * Until the file exists it renders a visible placeholder carrying a [[TODO: …]],
+ * which previews show and production builds refuse.
+ */
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+interface Props { id: string }
+const { id } = Astro.props;
+const slug = Astro.url.pathname.split('/').filter(Boolean)[1] ?? '';
+const project = await getEntry('projects', slug);
+const item = project?.data.media.find((m) => m.id === id);
+if (!item) throw new Error(`<Media id="${id}"> has no entry in the media list of project "${slug}"`);
+if (item.src && !item.alt) throw new Error(`Media "${id}" has a file but no approved alt text`);
+const label = item.kind === 'gif' ? 'GIF' : 'Screenshot';
+---
+{item.src ? (
+  <figure class="media" data-media={id}><Image src={item.src} alt={item.alt!} /></figure>
+) : (
+  <figure class="media media--placeholder" data-media={id}>
+    <p>[[TODO: {label}: {item.description}]]</p>
+  </figure>
+)}

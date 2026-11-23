@@ -1,0 +1,19 @@
+# Never edit the title (titles.lock).
+title: "Scaling, Simplification, and Adaptation: Lessons from Pretraining on Machine-Translated Text"
+group: text-complexity
+order: 3
+venue: 5th Workshop on Multilingual Representation Learning (MRL) @ EMNLP 2025
+location: Suzhou, China
+year: 2025
+authors:
+  - name: Dan John Velasco
+    equal: true
+  - name: Matthew Theodore Roque
+    me: true
+    equal: true
+links:
+  - kind: acl
+    url: https://aclanthology.org/2025.mrl-main.40/
+  - kind: arxiv
+    url: https://arxiv.org/abs/2509.17317
+summary: Most languages lack enough native text to pretrain on. We pretrained GPT-2 models (124M–774M) on English machine-translated into Indonesian and Tamil. These models improve with scale, and a small amount of native text afterwards often beats training on native text alone. Simplifying the English first hurt, and culture-sensitive tasks like toxicity detection still need native data.

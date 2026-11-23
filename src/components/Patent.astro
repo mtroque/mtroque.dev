@@ -1,0 +1,14 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUi } from '../lib/content';
+interface Props { patent: CollectionEntry<'patents'> }
+const { data } = Astro.props.patent;
+const ui = await getUi();
+// Until data.published is true the schema allows only titles, status and office names,
+// and this component renders only those.
+---
+<article class="patent" id="patent">
+  <h3>{data.displayTitle}</h3>
+  <p class="official-title">{data.officialTitle}</p>
+  <p class="status">{ui.patentStatus[data.status]} · {data.offices.map((o) => o.office).join(', ')}</p>
+</article>

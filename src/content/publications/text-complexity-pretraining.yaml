@@ -1,0 +1,19 @@
+# Never edit the title (titles.lock).
+title: Rethinking the Role of Text Complexity in Language Model Pretraining
+group: text-complexity
+order: 1
+venue: 1st BabyLM Workshop @ EMNLP 2025
+location: Suzhou, China
+year: 2025
+authors:
+  - name: Dan John Velasco
+    equal: true
+  - name: Matthew Theodore Roque
+    me: true
+    equal: true
+links:
+  - kind: acl
+    url: https://aclanthology.org/2025.babylm-main.1/
+  - kind: arxiv
+    url: https://arxiv.org/abs/2509.16551
+summary: We simplified pretraining text with an LLM while keeping its content, then trained models from 28M to 500M parameters on each version. Smaller models cope far better with simpler text. Simple text helps linguistic tasks, complex text helps world-knowledge tasks, and fine-tuning results barely change.

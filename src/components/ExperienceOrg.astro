@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getUi } from '../lib/content';
+import { formatRange } from '../lib/format';
+interface Props { org: CollectionEntry<'experience'> }
+const { data } = Astro.props.org;
+const ui = await getUi();
+---
+<article class="experience-org">
+  <h3>{data.org}</h3>
+  <p class="meta">{data.role} · {formatRange(data.start, data.end, ui.present)} · {data.location}</p>
+  {data.note && <p class="note">{data.note}</p>}
+  <ul class="entries">
+    {data.entries.map((e) => (
+      <li>
+        {e.href ? (
+          <p><strong>{e.title}:</strong> <a href={e.href}>{e.body}</a></p>
+        ) : (
+          <>
+            <p><strong>{e.title}</strong>{e.qualifier && <> · <span class="qualifier">{e.qualifier}</span></>}</p>
+            {e.body && <p>{e.body}</p>}
+          </>
+        )}
+      </li>
+    ))}
+  </ul>
+</article>

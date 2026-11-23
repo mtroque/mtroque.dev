@@ -1,0 +1,19 @@
+org: Samsung Research
+role: AI Engineer
+start: 2024-06
+end: 2026-05
+location: Taguig, Philippines
+order: 2
+entries:
+  - title: Samsung.com customer service chatbot
+    qualifier: 5 regions (US, Canada, UK, Australia, India)
+    body: A pre-LLM chatbot built on vector search over an FAQ database, combined with scripted answer flows.
+  - title: Appliance repair chatbot
+    body: Used by Samsung repair technicians around the world. It uses the same architecture as the customer service chatbot.
+  - title: Test cases and documentation from solution designs
+    body: LLM automation that drafts test cases and technical documents from a solution design. The documents cover software development, testing, and internal process and compliance.
+  - title: Web browsing agent
+    body: Takes a task in plain language and uses an LLM to navigate a browser and complete it.
+  - title: Research
+    body: see Selected Patents & Publications.
+    href: "#publications"

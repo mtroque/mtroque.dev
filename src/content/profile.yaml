@@ -1,0 +1,20 @@
+# Intro, links and contact. No CV yet: add `cv: /cv.pdf` (file in public/) to show a link.
+name: Matthew Roque
+location: Taguig, Philippines
+headline: I build AI agents for work where mistakes are expensive, and the checks that show whether they did the job.
+bio:
+  - I'm a Senior AI Engineer at PwC, building multi-agent systems for banks and insurers, where an agent's work has to hold up against regulation.
+  - The question I keep coming back to is how you check what an AI actually did. It's behind [my pending patent](#publications) on prompt-to-output attribution, and behind [Strop](/projects/strop/), a tool I'm building that catches the workarounds coding agents don't mention and turns them into checks.
+  - Before PwC, I spent two years at Samsung Research, building chatbots used by customers and repair technicians around the world, and publishing research on how training data shapes language models. I hold a BS & MS in Computer Engineering from De La Salle University.
+links:
+  - label: GitHub
+    href: https://github.com/mtroque
+  - label: LinkedIn
+    href: https://www.linkedin.com/in/mt-roque/
+  - label: Google Scholar
+    href: https://scholar.google.com/citations?user=tcikcYAAAAAJ&hl=en
+  - label: Email
+    href: mailto:roquematthewc@gmail.com
+sectionNotes:
+  projects: Things I build on my own time, outside of work.
+contact: "Email is the best way to reach me: [roquematthewc@gmail.com](mailto:roquematthewc@gmail.com). I'm happy to talk about making agents reliable, especially in regulated industries. I'm also open to research collaborations."

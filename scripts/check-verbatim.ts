@@ -1,0 +1,80 @@
+/**
+ * pnpm check:verbatim [--source <file> | --ref <git-ref>]
+ *
+ * Migration guard: every string in src/content/ (except ui.yaml, which is new UI copy) must
+ * appear character-for-character in CONTENT.md, so moving the copy can't reword anything.
+ * After CONTENT.md is retired, check against its last full version: --ref <commit>.
+ */
+import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import fg from 'fast-glob';
+import { parse as parseYaml } from 'yaml';
+import { formatRange } from '../src/lib/format';
+
+/** Strip Markdown syntax so the same text compares equal on both sides. */
+export function plain(line: string): string {
+  return line
+    .replace(/^\s*(?:[-*]|\d+\.|#{1,6})\s+/, '')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replace(/\*\*|`/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** Keys whose values are identifiers or structure, not copy. */
+const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster']);
+
+function strings(node: unknown, key = ''): string[] {
+  if (typeof node === 'string') return STRUCTURAL.has(key) ? [] : [node];
+  if (Array.isArray(node)) return node.flatMap((n) => strings(n, key));
+  if (node && typeof node === 'object')
+    return Object.entries(node).flatMap(([k, v]) => strings(v, k));
+  return [];
+}
+
+export function mdxBodyLines(body: string): string[] {
+  return body
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith('<') && !l.startsWith('{/*') && !/^\|[-|\s]+\|$/.test(l))
+    .flatMap((l) => (l.startsWith('|') ? l.split('|').map((c) => c.trim()).filter(Boolean) : [l]));
+}
+
+export function checkVerbatim(contentMd: string, files: { path: string; text: string }[]) {
+  const haystack = contentMd.split('\n').map(plain).join('\n');
+  const missing: { file: string; text: string }[] = [];
+  const has = (t: string) => haystack.includes(plain(t)) || contentMd.includes(t);
+  for (const { path, text } of files) {
+    let candidates: string[];
+    if (path.endsWith('.mdx')) {
+      const [, fm = '', body = ''] = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/) ?? [];
+      candidates = [...strings(parseYaml(fm)), ...mdxBodyLines(body)];
+    } else {
+      candidates = strings(parseYaml(text));
+    }
+    for (const c of candidates) if (!has(c)) missing.push({ file: path, text: c });
+  }
+  return missing;
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2);
+  const ref = args[args.indexOf('--ref') + 1];
+  const source = args.includes('--ref')
+    ? execFileSync('git', ['show', `${ref}:docs/CONTENT.md`], { encoding: 'utf8' })
+    : readFileSync(args.includes('--source') ? args[args.indexOf('--source') + 1]! : 'docs/CONTENT.md', 'utf8');
+
+  const paths = fg.sync('src/content/**/*.{yaml,mdx}').filter((p) => !p.endsWith('/ui.yaml')).sort();
+  const missing = checkVerbatim(source, paths.map((p) => ({ path: p, text: readFileSync(p, 'utf8') })));
+
+  // Derived display strings must also match the source.
+  for (const p of fg.sync('src/content/experience/*.yaml')) {
+    const d = parseYaml(readFileSync(p, 'utf8'));
+    const range = formatRange(d.start, d.end, 'present');
+    if (!source.includes(range)) missing.push({ file: p, text: `(formatted dates) ${range}` });
+  }
+
+  for (const m of missing) console.error(`${m.file}: not in CONTENT.md: "${m.text}"`);
+  if (missing.length) process.exit(1);
+  console.log(`check:verbatim: ${paths.length} files match CONTENT.md`);
+}

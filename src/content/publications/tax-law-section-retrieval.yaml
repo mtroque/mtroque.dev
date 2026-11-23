@@ -1,0 +1,20 @@
+# Never edit the title (titles.lock).
+title: "Harnessing NLP for Legal Section Retrieval: Embedding Models in Philippine Taxation Law"
+group: tax-law-retrieval
+order: 2
+venue: IEEE HNICEM 2024 (16th)
+location: Baguio, Philippines
+year: 2024
+authors:
+  - name: Matthew Roque
+    me: true
+  - name: Nicole Abejuela
+  - name: Melvin Cabatuan
+  - name: Shirley Chu
+  - name: Michael Ng
+  - name: Hans Nolasco
+  - name: Jenine Valencia
+links:
+  - kind: ieee
+    url: https://ieeexplore.ieee.org/document/11258752/
+summary: We built a manually annotated dataset of tax-law questions and compared embedding models for finding the right section of the Philippine National Internal Revenue Code in response to a user's question.

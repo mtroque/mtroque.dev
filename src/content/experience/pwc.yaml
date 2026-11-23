@@ -1,0 +1,17 @@
+# Client-confidential. Never add client names or details beyond these entries.
+org: PwC
+role: Senior AI Engineer
+start: 2026-05
+location: Taguig, Philippines
+order: 1
+note: I build multi-agent systems for financial services clients. Client names and details stay confidential.
+confidential: true
+entries:
+  - title: Complaints quality review and live assistance
+    qualifier: major bank
+    body: "A multi-agent workflow that reviews how frontline staff handled customer complaints against industry regulations. I extended it from reviewing cases after the fact to helping while they're open: it suggests entries as staff fill in case details, and drafts letters to customers when one is needed."
+  - title: AI governance "front door"
+    qualifier: major insurer
+    body: An agentic platform that every new AI platform, model or solution passes through before it can be used in the organization. It handles the required governance documentation and gets the necessary approvals.
+  - title: Regulatory change assistant
+    body: A multi-agent assistant that reads new regulations and checks them against an organization's current policies and controls, to work out what's affected and what has to change to stay compliant.

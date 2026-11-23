@@ -8,5 +8,7 @@ export default defineConfig({
   site: resolveSiteUrl(),
   trailingSlash: 'always',
   output: 'static',
+  // Render the copy's characters exactly (no automatic curly quotes), same as YAML-sourced text.
+  markdown: { smartypants: false },
   integrations: [mdx(), sitemap(), todoGate()],
 });

@@ -7,6 +7,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
+import { parse as parseYaml } from 'yaml';
 
 /** Matches [[TODO: text]]. The bare format example "[[TODO: ...]]" is ignored. */
 export const TODO_RE = /\[\[TODO:\s*(.+?)\s*\]\]/g;
@@ -19,7 +20,8 @@ export function findTodos(source: string, file: string): Todo[] {
   source.split('\n').forEach((lineText, i) => {
     for (const m of lineText.matchAll(TODO_RE)) {
       const text = m[1]!;
-      if (!EXAMPLE.test(text)) out.push({ file, line: i + 1, text });
+      // Skip the format example and template code that builds a TODO ({…} expressions).
+      if (!EXAMPLE.test(text) && !/[{}]/.test(text)) out.push({ file, line: i + 1, text });
     }
   });
   return out;
@@ -34,8 +36,26 @@ export function listSourceFiles(): string[] {
   return out.split('\n').filter((f) => f && TEXT.test(f) && SCOPE.some((re) => re.test(f)));
 }
 
+/** Media items with no file yet render as placeholders; list each at its frontmatter line. */
+export function findMediaGaps(source: string, file: string): Todo[] {
+  const fm = source.match(/^---\n([\s\S]*?)\n---/)?.[1];
+  if (!fm) return [];
+  const media = (parseYaml(fm)?.media ?? []) as { id: string; kind: string; description: string; src?: string }[];
+  const lines = source.split('\n');
+  return media
+    .filter((m) => !m.src)
+    .map((m) => ({
+      file,
+      line: lines.findIndex((l) => l.trim() === `- id: ${m.id}`) + 1,
+      text: `${m.kind === 'gif' ? 'GIF' : 'Screenshot'}: ${m.description}`,
+    }));
+}
+
 export function collectTodos(): Todo[] {
-  return listSourceFiles().flatMap((f) => findTodos(readFileSync(f, 'utf8'), f));
+  return listSourceFiles().flatMap((f) => {
+    const src = readFileSync(f, 'utf8');
+    return [...findTodos(src, f), ...(f.endsWith('.mdx') ? findMediaGaps(src, f) : [])];
+  });
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

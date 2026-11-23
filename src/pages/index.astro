@@ -1,8 +1,69 @@
 ---
 import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import ExperienceOrg from '../components/ExperienceOrg.astro';
+import Patent from '../components/Patent.astro';
+import Paper from '../components/Paper.astro';
+import CertVendor from '../components/CertVendor.astro';
+import {
+  getProfile, getUi, getProjects, getExperience, getPatents, getPublicationGroups, getCertificationsByVendor,
+} from '../lib/content';
+import { inline, isExternal, plural } from '../lib/format';
+
+const [profile, ui, projects, experience, patents, groups, certs] = await Promise.all([
+  getProfile(), getUi(), getProjects(), getExperience(), getPatents(), getPublicationGroups(), getCertificationsByVendor(),
+]);
 ---
-<Base title="Matthew Roque">
+<Base title={profile.name} description={profile.headline}>
+  <header class="site-header">
+    <a href="/">{profile.name}</a>
+    <nav aria-label={ui.navLabel}>
+      <ul>{ui.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+    </nav>
+  </header>
+
   <main>
-    <h1>Matthew Roque</h1>
+    <section id="intro" aria-labelledby="name">
+      <h1 id="name">{profile.name}</h1>
+      <p class="headline">{profile.headline}</p>
+      {profile.bio.map((p) => <p set:html={inline(p)} />)}
+      <p class="location">{profile.location}</p>
+      <ul class="profile-links">
+        {profile.links.map((l) => <li><a href={l.href} rel={isExternal(l.href) ? 'noopener' : undefined}>{l.label}</a></li>)}
+        {profile.cv && <li><a href={profile.cv}>{ui.cvLink}</a></li>}
+      </ul>
+    </section>
+
+    <section id="projects" aria-labelledby="projects-h">
+      <h2 id="projects-h">{ui.sections.projects}</h2>
+      <p class="section-note">{profile.sectionNotes.projects}</p>
+      {projects.map((p) => <ProjectCard project={p} />)}
+    </section>
+
+    <section id="experience" aria-labelledby="experience-h">
+      <h2 id="experience-h">{ui.sections.experience}</h2>
+      {experience.map((o) => <ExperienceOrg org={o} />)}
+    </section>
+
+    <section id="publications" aria-labelledby="publications-h">
+      <h2 id="publications-h">{ui.sections.publications}</h2>
+      {patents.map((p) => <Patent patent={p} />)}
+      {groups.map(({ group, papers }) => (
+        <section class="pub-group" aria-labelledby={`group-${group.id}`}>
+          <h3 id={`group-${group.id}`}>{group.data.heading} <span class="count">{plural(papers.length, ui.paperCount)}</span></h3>
+          {papers.map((paper) => <Paper paper={paper} />)}
+        </section>
+      ))}
+    </section>
+
+    <section id="certifications" aria-labelledby="certifications-h">
+      <h2 id="certifications-h">{ui.sections.certifications}</h2>
+      {certs.map((c) => <CertVendor {...c} />)}
+    </section>
+
+    <section id="contact" aria-labelledby="contact-h">
+      <h2 id="contact-h">{ui.sections.contact}</h2>
+      <p set:html={inline(profile.contact)} />
+    </section>
   </main>
 </Base>

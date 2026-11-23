@@ -1,0 +1,19 @@
+# Never edit the title (titles.lock).
+title: "Beyond Repetition: Text Simplification and Curriculum Learning for Data-Constrained Pretraining"
+group: text-complexity
+order: 2
+venue: 1st BabyLM Workshop @ EMNLP 2025
+location: Suzhou, China
+year: 2025
+authors:
+  - name: Matthew Theodore Roque
+    me: true
+    equal: true
+  - name: Dan John Velasco
+    equal: true
+links:
+  - kind: acl
+    url: https://aclanthology.org/2025.babylm-main.19/
+  - kind: arxiv
+    url: https://arxiv.org/abs/2509.24356
+summary: When pretraining data runs out, models usually see the same text again. We replaced that repetition with simplified rewrites and tested ordering data from simple to complex. Simplified text beat plain repetition, and smaller models gained the most from a simple-to-complex order.

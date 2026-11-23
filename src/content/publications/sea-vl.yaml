@@ -1,0 +1,18 @@
+# Never edit the title (titles.lock).
+title: Crowdsource, Crawl, or Generate? Creating SEA-VL, a Multicultural Vision-Language Dataset for Southeast Asia
+group: sea-vision-language
+order: 1
+venue: ACL 2025 (Main Conference)
+location: Vienna, Austria
+year: 2025
+authors:
+  - name: Samuel Cahyawijaya
+  - name: Holy Lovenia
+etAl: true
+authorNote: large multi-institution collaboration; I'm one of the contributors
+links:
+  - kind: acl
+    url: https://aclanthology.org/2025.acl-long.916/
+  - kind: arxiv
+    url: https://arxiv.org/abs/2503.07920
+summary: Southeast Asian cultures are underrepresented in vision-language datasets. We compared crowdsourcing, web crawling and image generation as ways to collect culturally relevant images, and released 1.28M of them. Crawling reached about 85% cultural relevance at a fraction of crowdsourcing's cost; generated images missed cultural detail.
