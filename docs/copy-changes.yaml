@@ -83,9 +83,12 @@
 
 - type: new
   file: src/content/projects/strop.mdx (description)
-  after: "Turning coding-agent workarounds into hard checks. Finds the workarounds coding agents didn't mention by reading their session transcripts."
-  reason: Meta description under 155 characters, from the tagline and the blurb's first sentence.
-  approved: 2026-11-24
+  after: "Finds the workarounds coding agents didn't mention by reading their session transcripts, and turns each one into a check."
+  reason: >-
+    Meta description under 155 characters. Replaces the unpublished draft "Turning coding-agent
+    workarounds into hard checks. Finds the workarounds coding agents didn't mention by reading
+    their session transcripts." because it repeated "workarounds coding agents" across its two sentences.
+  approved: 2026-11-24 (draft, then this wording)
 
 - type: new
   file: src/pages/index.astro (title, description)
