@@ -41,10 +41,13 @@ export function listSourceFiles(): string[] {
 export function findMediaGaps(source: string, file: string): Todo[] {
   const fm = source.match(/^---\n([\s\S]*?)\n---/)?.[1];
   if (!fm) return [];
-  const media = (parseYaml(fm)?.media ?? []) as { id: string; kind: string; description: string; src?: string }[];
+  const media = (parseYaml(fm)?.media ?? []) as {
+    id: string; kind: string; description: string; src?: string; video?: { mp4?: string }; poster?: string;
+  }[];
   const lines = source.split('\n');
   return media
-    .filter((m) => !m.src)
+    // Same rule as Media.astro: clips need a video and a poster, screenshots need src.
+    .filter((m) => (m.kind === 'gif' ? !(m.video?.mp4 && m.poster) : !m.src))
     .map((m) => ({
       file,
       line: lines.findIndex((l) => l.trim() === `- id: ${m.id}`) + 1,

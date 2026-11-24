@@ -19,6 +19,8 @@ describe('todos', () => {
   it('lists media items without a file at their frontmatter line', () => {
     const mdx = '---\ntitle: T\nmedia:\n  - id: a\n    kind: gif\n    description: photo flow\n  - id: b\n    kind: screenshot\n    description: done\n    src: ./b.png\n---\nBody';
     expect(findMediaGaps(mdx, 'p.mdx')).toEqual([{ file: 'p.mdx', line: 4, text: 'GIF: photo flow' }]);
+    const clip = '---\nmedia:\n  - id: c\n    kind: gif\n    description: d\n    video:\n      mp4: /m.mp4\n    poster: ./p.png\n---\n';
+    expect(findMediaGaps(clip, 'c.mdx')).toEqual([]);
   });
   it('ignores the format example', () => {
     expect(findTodos('Use `[[TODO: ...]]` for gaps.', 'f.md')).toEqual([]);

@@ -27,7 +27,7 @@ export function plain(line: string): string {
  * copy (approved 2026-11-24, logged as type: new in docs/copy-changes.yaml): not in the
  * baseline, but linted by lint:copy like everything else.
  */
-const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'alt', 'description']);
+const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'mp4', 'webm', 'alt', 'description']);
 
 function strings(node: unknown, key = ''): string[] {
   if (typeof node === 'string') return STRUCTURAL.has(key) ? [] : [node];

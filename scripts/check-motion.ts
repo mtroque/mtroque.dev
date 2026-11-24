@@ -8,7 +8,10 @@ import { existsSync } from 'node:fs';
 import { chromium, type Page } from 'playwright';
 import { serveDist } from './lib/serve-dist';
 
-if (!existsSync('dist/specimen/index.html')) {
+// Default: the specimen's test clip. `--page /projects/tablekeeper/` checks a real clip.
+const PAGE = process.argv.includes('--page') ? process.argv[process.argv.indexOf('--page') + 1]! : '/specimen/';
+
+if (PAGE === '/specimen/' && !existsSync('dist/specimen/index.html')) {
   console.error('dist/specimen/ missing: run `SPECIMEN=1 pnpm build` first');
   process.exit(1);
 }
@@ -29,7 +32,7 @@ try {
   for (const motion of ['reduce', 'no-preference'] as const) {
     const ctx = await browser.newContext({ reducedMotion: motion, viewport: { width: 390, height: 844 } });
     const page = await ctx.newPage();
-    await page.goto(`http://127.0.0.1:${PORT}/specimen/`);
+    await page.goto(`http://127.0.0.1:${PORT}${PAGE}`);
     await page.locator('[data-media-video] video').scrollIntoViewIfNeeded();
     await page.waitForTimeout(1500);
     const s = await state(page);

@@ -14,7 +14,7 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **Q-G7:** create public `mtroque/mtroque.dev` with `gh`; Vercel project under the personal account.
 - **Q-I1–3, Q-P1–2, Q-T5–6, Q-R2–5, Q-C1, Q-K1:** recommendations accepted. **Q-E1:** leave as written.
 - **Q-T1:** alt-text drafts shown to you before use; no captions. **Q-T3:** factory-PR slot dropped. **Q-T4:** MP4/WebM video with poster.
-- **Q-T2:** Patchwork. Answered: "Can I rotate and flip a patch when I place it?" Not covered: "What's a good strategy for beginners?" The rules flow runs only with `pnpm media --rules`; normal runs reuse the saved capture. Both answers are checked when captured.
+- **Q-T2:** Azul (changed from Patchwork 2026-11-24 at the owner's request). Answered: "How many points do I get for a complete vertical line at the end of the game?" Not covered: "What's a good strategy for beginners?" The rules flow runs only with `pnpm media --rules`; normal runs reuse the saved capture. Both answers are checked when captured.
 - **Q-R1:** headings kept as written, balanced with option (c): same mono size and a paper count on each heading rule.
 
 ## Decisions during build

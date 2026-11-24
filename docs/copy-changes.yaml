@@ -113,3 +113,10 @@
   after: The three media alt texts as written in the file.
   reason: Approved alt-text drafts (Q-T1); to be checked against the captures in Milestone 10.
   approved: 2026-11-24
+
+- type: new
+  file: tablekeeper.mdx (alt, rules-answers)
+  before: "Tablekeeper's rules assistant answering a Patchwork question with citation chips to the rulebook, and saying the rulebook doesn't cover a strategy question."
+  after: "Tablekeeper's rules assistant answering an Azul question with a citation chip to the rulebook, and saying the rulebook doesn't cover a strategy question."
+  reason: Matches the capture; the rules questions moved from Patchwork to Azul and the answer has one citation chip.
+  approved: 2026-11-24
