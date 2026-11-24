@@ -1,15 +1,77 @@
-/* Long-form text: case studies, bio. Vertical rhythm from margins on following siblings. */
+/* Long-form text: case studies. Vertical rhythm from margins on following siblings. */
 @layer components {
   .prose > * + * { margin-top: var(--space-4); }
+  .prose > :first-child { margin-top: 0; }
   .prose > h2 {
     margin-top: var(--space-12);
     padding-top: var(--space-4);
     border-top: var(--hairline);
+    scroll-margin-top: var(--space-4);
   }
+  .prose > h2:first-child { border-top: 0; padding-top: 0; }
   .prose > h2 + * { margin-top: var(--space-3); }
   .prose ul, .prose ol { padding-left: 1.25em; }
-  .prose li + li { margin-top: var(--space-2); }
+  .prose li + li { margin-top: var(--space-3); }
   .prose li > ul, .prose li > ol { margin-top: var(--space-2); }
+  .prose li > ul > li + li { margin-top: var(--space-1); }
   .prose li::marker { color: var(--ink-muted); }
   .prose ol > li::marker { font-family: var(--font-mono); font-size: 0.85em; }
+
+  /* Tables (rehype-table-labels adds roles and data-label). */
+  .prose .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    margin-block: var(--space-6);
+  }
+  .data-table th {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: var(--tracking-mono);
+    color: var(--ink-muted);
+    text-align: left;
+    vertical-align: bottom;
+    padding: 0 var(--space-3) var(--space-2) 0;
+    border-bottom: 1px solid var(--ink);
+  }
+  .data-table td {
+    padding: var(--space-2) var(--space-3) var(--space-2) 0;
+    border-bottom: var(--hairline);
+    vertical-align: top;
+  }
+  .data-table td:first-child { font-weight: 600; }
+  /* A drawn check mark: the ✓ glyph in both site fonts looks like a square-root sign. */
+  .data-table .check {
+    display: inline-block;
+    width: 0.36em;
+    height: 0.72em;
+    margin: 0 0.3em 0 0.15em;
+    border: solid currentColor;
+    border-width: 0 0.13em 0.13em 0;
+    transform: translateY(-0.12em) rotate(42deg);
+  }
+
+  /* Phones: each row becomes a block, game name first, then "Label  value" lines. */
+  @media (max-width: 39.99rem) {
+    .data-table, .data-table tbody, .data-table tr, .data-table td { display: block; }
+    .data-table thead {
+      position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    .data-table tr { padding-block: var(--space-3); border-top: var(--hairline); }
+    .data-table tr:last-child { border-bottom: var(--hairline); }
+    .data-table td { display: flex; gap: var(--space-3); padding: var(--space-1) 0; border: 0; }
+    .data-table td:first-child { font-size: var(--step-0); padding-bottom: var(--space-2); }
+    .data-table td:not(:first-child)::before {
+      /* The header text, shown visually; screen readers already get it from the table roles. */
+      content: attr(data-label) / '';
+      flex: 0 0 8.5rem;
+      font-family: var(--font-mono);
+      font-size: var(--step--1);
+      letter-spacing: var(--tracking-mono);
+      color: var(--ink-muted);
+      padding-top: 0.2em;
+    }
+  }
 }

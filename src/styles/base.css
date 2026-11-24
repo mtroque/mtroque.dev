@@ -55,6 +55,7 @@
 
   strong { font-weight: 650; }
   code {
+    white-space: nowrap;
     font-family: var(--font-mono);
     font-size: 0.85em;
     background: var(--paper-sunk);

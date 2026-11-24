@@ -52,6 +52,9 @@ const ui = defineCollection({
     tocLabel: z.string(),
     profileLinksLabel: z.string(),
     skipLink: z.string(),
+    checkLabel: z.string(),
+    mediaPlay: z.string(),
+    mediaPause: z.string(),
   }),
 });
 

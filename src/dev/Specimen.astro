@@ -7,10 +7,16 @@ import MarginNote from '../components/MarginNote.astro';
 import StatusStamp from '../components/StatusStamp.astro';
 import { getProfile, getUi, getPublicationGroups } from '../lib/content';
 import { inline } from '../lib/format';
+import MediaVideo from '../components/MediaVideo.astro';
+import { getImage } from 'astro:assets';
+import demoMp4 from './fixtures/demo.mp4?url';
+import demoWebm from './fixtures/demo.webm?url';
+import demoPoster from './fixtures/demo-poster.png';
 
 const [profile, ui, groups] = await Promise.all([getProfile(), getUi(), getPublicationGroups()]);
 const paper = groups[1]!.papers[0]!.data;
 const swatches = ['paper', 'paper-sunk', 'ink', 'ink-muted', 'rule', 'accent'];
+const poster = await getImage({ src: demoPoster, format: 'webp' });
 ---
 <Base title="Specimen" noindex>
   <div class="page">
@@ -38,7 +44,17 @@ const swatches = ['paper', 'paper-sunk', 'ink', 'ink-muted', 'rule', 'accent'];
     </section>
 
     <section class="record">
-      <p class="record__rail">§2 Color</p>
+      <p class="record__rail">§2 Media</p>
+      <div class="record__body">
+        <p class="mono muted">Test clip (ffmpeg testsrc2). Autoplays only without reduced motion, only on screen.</p>
+        <figure class="media" style="width: min(100%, 300px); margin-top: var(--space-4)">
+          <MediaVideo mp4={demoMp4} webm={demoWebm} poster={poster.src} alt="Test pattern clip" width={196} height={424} />
+        </figure>
+      </div>
+    </section>
+
+    <section class="record">
+      <p class="record__rail">§3 Color</p>
       <div class="record__body">
         <ul class="swatches">
           {swatches.map((s) => (

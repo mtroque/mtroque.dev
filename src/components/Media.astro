@@ -5,20 +5,64 @@
  * which previews show and production builds refuse.
  */
 import { getEntry } from 'astro:content';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import MediaVideo from './MediaVideo.astro';
 interface Props { id: string }
 const { id } = Astro.props;
 const slug = Astro.url.pathname.split('/').filter(Boolean)[1] ?? '';
 const project = await getEntry('projects', slug);
 const item = project?.data.media.find((m) => m.id === id);
 if (!item) throw new Error(`<Media id="${id}"> has no entry in the media list of project "${slug}"`);
-if (item.src && !item.alt) throw new Error(`Media "${id}" has a file but no approved alt text`);
+const hasFile = item.kind === 'gif' ? Boolean(item.video && item.poster) : Boolean(item.src);
+if (hasFile && !item.alt) throw new Error(`Media "${id}" has a file but no approved alt text`);
 const label = item.kind === 'gif' ? 'GIF' : 'Screenshot';
+const poster = item.kind === 'gif' && item.poster ? await getImage({ src: item.poster, format: 'webp', width: 780 }) : undefined;
 ---
-{item.src ? (
-  <figure class="media" data-media={id}><Image src={item.src} alt={item.alt!} /></figure>
-) : (
-  <figure class="media media--placeholder" data-media={id}>
-    <p>[[TODO: {label}: {item.description}]]</p>
-  </figure>
-)}
+<figure class="media" data-media={id}>
+  {!hasFile ? (
+    <div class="media__frame media__frame--placeholder">
+      <p>[[TODO: {label}: {item.description}]]</p>
+    </div>
+  ) : item.kind === 'gif' ? (
+    <div class="media__frame">
+      <MediaVideo
+        mp4={item.video!.mp4}
+        webm={item.video!.webm}
+        poster={poster!.src}
+        alt={item.alt!}
+        width={item.poster!.width}
+        height={item.poster!.height}
+      />
+    </div>
+  ) : (
+    <div class="media__frame">
+      <Image src={item.src!} alt={item.alt!} widths={[390, 780]} sizes="(min-width: 40rem) 300px, 80vw" />
+    </div>
+  )}
+</figure>
+
+<style>
+  /* Phone captures (390x844): shown at phone width so they read like the app, not a poster. */
+  .media { margin-block: var(--space-4) var(--space-6); }
+  .media__frame {
+    width: min(100%, 300px);
+    border: var(--hairline);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--paper-sunk);
+  }
+  .media__frame :global(img) { width: 100%; height: auto; }
+  .media__frame--placeholder {
+    aspect-ratio: 390 / 844;
+    display: grid;
+    place-items: center;
+    padding: var(--space-4);
+    border: 1px dashed var(--ink-muted);
+  }
+  .media__frame--placeholder p {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--ink-muted);
+  }
+</style>

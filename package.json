@@ -21,7 +21,8 @@
     "check:contrast": "tsx scripts/check-contrast.ts",
     "fonts": "tsx scripts/fonts.ts",
     "check:fonts": "tsx scripts/fonts.ts --check",
-    "check:font-features": "tsx scripts/check-font-features.ts"
+    "check:font-features": "tsx scripts/check-font-features.ts",
+    "check:motion": "tsx scripts/check-motion.ts"
   },
   "devEngines": {
     "runtime": {
@@ -31,6 +32,7 @@
     }
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.10",
     "@astrojs/mdx": "^8.1.6",
     "@astrojs/sitemap": "^3.7.6",
     "@vercel/analytics": "^2.0.1",
@@ -39,6 +41,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
     "fast-glob": "^3.3.3",
     "fontkit": "^3.0.0",

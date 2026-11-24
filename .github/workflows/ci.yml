@@ -21,3 +21,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm build
+      # Reduced-motion contract for clips, tested on the specimen's test clip.
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: SPECIMEN=1 pnpm build && pnpm check:motion

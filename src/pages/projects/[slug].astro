@@ -20,23 +20,70 @@ const sections = headings.filter((h) => h.depth === 2);
 <Base title={`${data.title} · ${profile.name}`} description={data.blurb}>
   <SiteHeader />
   <main class="page" id="main">
-    <article class="case-study">
-      <header>
-        <h1>{data.title}</h1>
-        <p class="tagline">{data.tagline}</p>
-        {data.status === 'in-development' && <p><StatusStamp text={ui.projectStatus['in-development']} /></p>}
-        <p class="lede">{data.blurb}</p>
-        <ul class="project-links">
-          {data.links.live && <li><a href={data.links.live} rel="noopener">{ui.projectLinks.live}</a></li>}
-          {data.links.source && <li><a href={data.links.source} rel="noopener">{ui.projectLinks.source}</a></li>}
-        </ul>
-        {data.stack.length > 0 && <p class="stack">{data.stack.join(' · ')}</p>}
+    <article class="case">
+      <header class="record case__head">
+        <div class="record__body">
+          <h1 class="case__title">{data.title}</h1>
+          <p class="case__tagline">{data.tagline}</p>
+          {data.status === 'in-development' && <p class="case__stamp"><StatusStamp text={ui.projectStatus['in-development']} /></p>}
+          <p class="case__lede">{data.blurb}</p>
+        </div>
+        <aside class="record__margin case__meta">
+          <ul class="case__links mono">
+            {data.links.live && <li><a href={data.links.live} rel="noopener">{ui.projectLinks.live}</a></li>}
+            {data.links.source && <li><a href={data.links.source} rel="noopener">{ui.projectLinks.source}</a></li>}
+          </ul>
+          {data.stack.length > 0 && (
+            <ul class="case__stack mono muted">{data.stack.map((s) => <li>{s}</li>)}</ul>
+          )}
+        </aside>
       </header>
-      <nav class="toc" aria-label={ui.tocLabel}>
-        <ul>{sections.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ul>
-      </nav>
-      <Content components={{ Media }} />
+
+      <div class="record case__main">
+        <nav class="record__rail toc" aria-labelledby="toc-label">
+          <p class="toc__label" id="toc-label">{ui.tocLabel}</p>
+          <ol class="toc__list">{sections.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+        </nav>
+        <div class="record__body prose">
+          <Content components={{ Media }} />
+        </div>
+      </div>
     </article>
   </main>
   <SiteFooter />
 </Base>
+
+<style>
+  .case__head { padding-block: var(--space-8) var(--space-8); }
+  .case__title { font-size: var(--step-3); font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+  .case__tagline { margin-top: var(--space-2); font-size: var(--step-1); line-height: 1.35; color: var(--ink-muted); }
+  .case__stamp { margin-top: var(--space-4); }
+  .case__lede { margin-top: var(--space-6); }
+  .case__links, .case__stack { list-style: none; padding: 0; }
+  .case__links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin-top: var(--space-4); }
+  .case__links a { display: inline-block; padding-block: var(--space-1); }
+  .case__stack { margin-top: var(--space-3); display: flex; flex-wrap: wrap; gap: 0 var(--space-4); line-height: 1.7; }
+
+  .case__main { border-top: var(--hairline); padding-top: var(--space-8); }
+  .toc__label { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: var(--tracking-mono); color: var(--ink-muted); }
+  .toc__list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 var(--space-4);
+  }
+  .toc__list a { display: inline-block; padding-block: var(--space-1); color: var(--ink); text-decoration-color: var(--rule); }
+  .toc__list a:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+  @media (min-width: 64rem) {
+    .case__meta { padding-top: var(--space-2); border-left: var(--hairline); padding-left: var(--space-4); }
+    .case__links { flex-direction: column; gap: var(--space-1); margin-top: 0; }
+    .case__stack { flex-direction: column; margin-top: var(--space-4); line-height: 1.6; }
+    .toc__list { flex-direction: column; gap: 0; }
+  }
+</style>

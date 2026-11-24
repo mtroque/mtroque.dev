@@ -1,0 +1,81 @@
+---
+/**
+ * A short looping clip in place of a GIF (smaller, pausable).
+ * - Autoplays only when the user hasn't asked for reduced motion, and only while on screen.
+ * - Otherwise shows the poster frame with a Play button. A Pause button is always there.
+ * - Without JavaScript: native controls, no autoplay.
+ */
+import { getUi } from '../lib/content';
+interface Props {
+  mp4: string;
+  webm?: string | undefined;
+  poster: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+const { mp4, webm, poster, alt, width, height } = Astro.props;
+const ui = await getUi();
+---
+<div class="media-video" data-media-video>
+  <video controls muted loop playsinline preload="none" poster={poster} width={width} height={height} aria-label={alt}>
+    {webm && <source src={webm} type="video/webm" />}
+    <source src={mp4} type="video/mp4" />
+  </video>
+  <button type="button" class="media-video__toggle" hidden data-play={ui.mediaPlay} data-pause={ui.mediaPause}>
+    {ui.mediaPlay}
+  </button>
+</div>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  for (const box of document.querySelectorAll<HTMLElement>('[data-media-video]')) {
+    const video = box.querySelector('video')!;
+    const button = box.querySelector('button')!;
+    video.controls = false;
+    button.hidden = false;
+    let userPaused = false;
+
+    const label = () => (button.textContent = video.paused ? button.dataset.play! : button.dataset.pause!);
+    video.addEventListener('play', label);
+    video.addEventListener('pause', label);
+    button.addEventListener('click', () => {
+      if (video.paused) {
+        userPaused = false;
+        void video.play();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
+    });
+
+    // Autoplay only with motion allowed, only on screen, and never after the user paused.
+    new IntersectionObserver(([entry]) => {
+      if (!entry) return;
+      if (entry.isIntersecting && !reduce.matches && !userPaused) void video.play().catch(() => {});
+      else if (!entry.isIntersecting) video.pause();
+    }, { threshold: 0.5 }).observe(video);
+    reduce.addEventListener('change', (e) => e.matches && video.pause());
+    label();
+  }
+</script>
+
+<style>
+  .media-video { position: relative; }
+  .media-video video { width: 100%; height: auto; background: var(--paper-sunk); }
+  .media-video__toggle {
+    position: absolute;
+    right: var(--space-2);
+    bottom: var(--space-2);
+    min-width: 4.5rem;
+    min-height: 2rem;
+    padding: var(--space-1) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--paper);
+    background: var(--ink);
+    border: 0;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+</style>

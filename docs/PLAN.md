@@ -35,6 +35,8 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **Copy and display changes, 2026-11-24** (each logged in `docs/copy-changes.yaml`): "Architect – Professional" (was "Claude Certified Architect – Professional"); vendor group "Claude" (was "Anthropic (Claude)"); Samsung.com chatbot qualifier replaced by the sentence "Live in the US, Canada, UK, Australia and India."; PwC confidentiality note removed (qualifiers kept); date ranges as "May 2026 – Present" via the formatter. Work-project titles stay in sentence case.
 - **Links never contain trailing punctuation** (the Samsung "Research" line was the only case; all 79 links checked).
 - **Footer:** "© Matthew Roque", no year (a build-time year goes stale between deploys).
+- **Case studies (M7):** Astro 7's default Markdown processor doesn't run rehype plugins, so `markdown.processor` is `unified({ smartypants: false, rehypePlugins })` from `@astrojs/markdown-remark` (MDX inherits it). The games table gets ARIA roles, per-cell labels for the phone layout, and a drawn check mark with hidden "Yes" text (both fonts draw ✓ like √). Numbers are not echoed as margin notes, as the wireframe once suggested: that would duplicate copy.
+- **Clips:** `<video>` with poster; autoplay only without reduced motion and only on screen; Play/Pause button; native controls without JS. `pnpm check:motion` tests this in a browser on the specimen's test clip and runs in CI.
 
 
 Throughline for every decision below: **I build AI agents and make them trustworthy.** The design treats the site like an evidence file: every claim sits next to the thing that backs it (a paper, a patent, a number, a demo).
