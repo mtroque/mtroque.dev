@@ -59,7 +59,8 @@ export function ogMarkup(c: OgContent): Node {
         ...(c.subtitle ? [el('div', { display: 'flex', width: TEXT, fontSize: 40, fontWeight: 400, color: C.muted, marginTop: 20, lineHeight: 1.3 }, c.subtitle)] : []),
         ...(c.stamp
           ? [el('div', { display: 'flex', marginTop: 32 }, [
-              el('div', { display: 'flex', fontFamily: 'Mono', fontSize: 22, letterSpacing: 2, color: C.accent, border: `2px solid ${C.accent}`, borderRadius: 3, padding: '8px 14px 6px' }, c.stamp.toUpperCase()),
+              // Large enough to read in a ~300px-wide chat preview.
+              el('div', { display: 'flex', fontFamily: 'Mono', fontSize: 30, letterSpacing: 2, color: C.accent, border: `3px solid ${C.accent}`, borderRadius: 4, padding: '10px 18px 8px' }, c.stamp.toUpperCase()),
             ])]
           : []),
       ]),

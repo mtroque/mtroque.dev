@@ -81,3 +81,10 @@ describe('date ranges', () => {
     expect(applyCopyChanges('A. Note here.\nB.', [{ file: 'f', before: 'Note here.', after: '', reason: 'r', approved: 'd' }])).toBe('A. \nB.');
   });
 });
+
+describe('new-copy log entries', () => {
+  it('are recorded but not applied to the baseline', async () => {
+    const { applyCopyChanges } = await import('../scripts/check-verbatim');
+    expect(applyCopyChanges('A.', [{ type: 'new', file: 'f', before: '', after: 'B.', reason: 'r', approved: 'd' }])).toBe('A.');
+  });
+});

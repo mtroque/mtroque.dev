@@ -67,6 +67,8 @@ const projects = defineCollection({
       tagline: z.string(),
       order: z.number().int(),
       blurb: z.string(),
+      /** Meta description (search results, link previews). Approved copy, max 155 characters. */
+      description: z.string().max(155),
       status: z.enum(['live', 'in-development']),
       links: z.object({ live: z.url().optional(), source: z.url().optional() }),
       stack: z.array(z.string()).default([]),

@@ -23,10 +23,11 @@ export function plain(line: string): string {
 }
 
 /**
- * Keys whose values are identifiers or structure, not copy. `alt` is new copy (approved alt
- * text, Q-T1 2026-11-24): not in the baseline, but linted by lint:copy like everything else.
+ * Keys whose values are identifiers or structure, not copy. `alt` and `description` are new
+ * copy (approved 2026-11-24, logged as type: new in docs/copy-changes.yaml): not in the
+ * baseline, but linted by lint:copy like everything else.
  */
-const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'alt']);
+const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'alt', 'description']);
 
 function strings(node: unknown, key = ''): string[] {
   if (typeof node === 'string') return STRUCTURAL.has(key) ? [] : [node];
@@ -44,7 +45,8 @@ export function mdxBodyLines(body: string): string[] {
     .flatMap((l) => (l.startsWith('|') ? l.split('|').map((c) => c.trim()).filter(Boolean) : [l]));
 }
 
-export type CopyChange = { file: string; before: string; after: string; reason: string; approved: string };
+/** type "change" (default) rewrites baseline text; type "new" records approved new copy (nothing to apply). */
+export type CopyChange = { file: string; before: string; after: string; reason: string; approved: string; type?: 'change' | 'new' };
 
 export const COPY_CHANGES = 'docs/copy-changes.yaml';
 
@@ -52,7 +54,11 @@ export function loadCopyChanges(path = COPY_CHANGES): CopyChange[] {
   if (!existsSync(path)) return [];
   const raw = (parseYaml(readFileSync(path, 'utf8')) ?? []) as Partial<CopyChange>[];
   return raw.map((c, i) => {
-    // `after` may be "" for a removal, but the key must be there.
+    // `after` may be "" for a removal, but the key must be there. New copy has no `before`.
+    if (c.type === 'new') {
+      if (!c.file || !c.after || !c.reason || !c.approved) throw new Error(`${path}: new-copy entry ${i + 1} needs file, after, reason and approved`);
+      return { ...c, before: '' } as CopyChange;
+    }
     if (!c.file || !c.before || typeof c.after !== 'string' || !c.reason || !c.approved)
       throw new Error(`${path}: entry ${i + 1} needs file, before, after (may be ""), reason and approved`);
     return c as CopyChange;
@@ -63,6 +69,7 @@ export function loadCopyChanges(path = COPY_CHANGES): CopyChange[] {
 export function applyCopyChanges(baseline: string, changes: CopyChange[]): string {
   let out = baseline;
   for (const c of changes) {
+    if (c.type === 'new') continue;
     const n = out.split(c.before).length - 1;
     if (n !== 1) throw new Error(`copy change for ${c.file}: "${c.before}" found ${n} times in the baseline (need 1)`);
     out = out.replace(c.before, c.after);

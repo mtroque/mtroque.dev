@@ -72,3 +72,41 @@
   after: "June 2024 – May 2026"
   reason: Every date range uses a spaced en dash.
   approved: 2026-11-24
+
+# New copy (type: new): approved text with no baseline to replace; recorded, not applied.
+
+- type: new
+  file: src/content/projects/tablekeeper.mdx (description)
+  after: "A phone companion for board games. Photograph your finished board and it drafts the score for you to confirm."
+  reason: Meta description under 155 characters, taken from the card blurb (first two clauses; the semicolon becomes a period).
+  approved: 2026-11-24
+
+- type: new
+  file: src/content/projects/strop.mdx (description)
+  after: "Turning coding-agent workarounds into hard checks. Finds the workarounds coding agents didn't mention by reading their session transcripts."
+  reason: Meta description under 155 characters, from the tagline and the blurb's first sentence.
+  approved: 2026-11-24
+
+- type: new
+  file: src/pages/index.astro (title, description)
+  after: 'Title "Matthew Roque"; description = the headline.'
+  reason: Home page title and meta description from existing copy.
+  approved: 2026-11-24
+
+- type: new
+  file: src/pages/projects/[slug].astro (title)
+  after: '"Tablekeeper · Matthew Roque", "Strop · Matthew Roque"'
+  reason: Case-study page titles (project title · name).
+  approved: 2026-11-24
+
+- type: new
+  file: src/pages/404.astro, src/content/ui.yaml (notFound)
+  after: 'Title "Page not found · Matthew Roque", heading "Page not found", link "Go to the home page"; no description (noindex).'
+  reason: 404 page copy.
+  approved: 2026-11-24
+
+- type: new
+  file: tablekeeper.mdx (alt)
+  after: The three media alt texts as written in the file.
+  reason: Approved alt-text drafts (Q-T1); to be checked against the captures in Milestone 10.
+  approved: 2026-11-24
