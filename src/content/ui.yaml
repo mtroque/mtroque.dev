@@ -28,6 +28,7 @@ patentStatus:
   pending: Patent pending
   granted: Granted
 etAl: et al.
+authorGap: …
 equalContribution: Equal contribution
 paperCount:
   one: "{n} paper"
@@ -38,9 +39,8 @@ publicationLinks:
   ieee: IEEE Xplore
   pdf: PDF
   other: Link
-moreToggle: + {n} more
 cvLink: CV (PDF)
-backHome: Matthew Roque
 navLabel: Sections
 tocLabel: On this page
 profileLinksLabel: Links
+skipLink: Skip to content

@@ -29,6 +29,9 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **Fonts** (2026-11-24): subset by `pnpm fonts` from upstream files pinned to a google/fonts commit and SHA-256. Latin + Latin-1, curly quotes, dashes, ellipsis, ✓, plus every character in the copy (`pnpm check:fonts` fails if new copy needs more). Serif: weights 400–650, optical sizes 12–48, no OpenType alternates (so lining numerals, no fi/fl ligatures). Only the serif file is preloaded; all faces use `font-display: swap`. Total 85.3 KB (serif 57.9, mono 400 13.5, mono 500 13.8).
 - **OpenType features** (2026-11-24): no CSS requests any. The serif subset's default figures are lining and equal-width; `pnpm check:font-features` shapes text to prove any requested feature changes glyphs, so faked small caps or ignored figure styles fail CI.
 - **Vercel scope** confirmed: `bunny-budget` is the slug of the personal Hobby account (the user's default team, OWNER); project `mtroque-dev` linked to `mtroque/mtroque.dev`.
+- **SEA-VL authors** (approved 2026-11-24, logged in `docs/copy-changes.yaml`): "Samuel Cahyawijaya, Holy Lovenia, … **Matthew Theodore Roque**, … et al." Name as published in ACL Anthology 2025.acl-long.916, author 36 of 92. The parenthetical and the `authorNote` field are gone; author lists support `{ gap: true }` for "…". This supersedes Q-R2.
+- **Certifications** (approved 2026-11-24, logged): all 19 listed plainly by vendor, highest level first. The featured/more split and the "+ N more" toggle are removed from the schema, content and UI strings; `badgeUrl` stays optional.
+- **Paper links:** every paper shows all its links as visible labels separated by "·" (e.g. "ACL Anthology · arXiv"), in addition to the title link.
 
 
 Throughline for every decision below: **I build AI agents and make them trustworthy.** The design treats the site like an evidence file: every claim sits next to the thing that backs it (a paper, a patent, a number, a demo).
@@ -117,7 +120,7 @@ Where each part of CONTENT.md goes:
 | 1 | **Personal Projects** | Personal Projects: section note, each project's title, tagline, card blurb, links, stack, status | Section note under the heading. One card per project, stacked full-width (two entries, no grid). Card: title · tagline, blurb, stack as a mono line, "Read the case study" link. Tablekeeper's margin holds Live app + Source. Strop shows an `In development` status stamp and its Source link. Whole card is not one giant link; the title and "Read the case study" are the links, so the external links stay separately clickable. |
 | 2 | **Experience** | Experience | PwC then Samsung. Per employer: org name, role · dates · location as a mono meta line, optional section note (PwC's confidentiality note). Each project is a short entry: bold title, qualifier ("major bank", "5 regions (US, …)") as a small mono tag, description. Samsung's "Research" entry renders as a link to `#publications`. |
 | 3 | **Selected Patents & Publications** | Selected Patents & Publications | Patent first, as its own block: display title, official title smaller beneath, then "Patent pending · USPTO, KIPO, IPOPHL". Nothing else (enforced in the schema, §2). Then three groups in a fixed order, each with its heading and papers. Per paper: title (linked to the first link), venue · location, author list with my name bold and `*` on equal-contribution authors, summary, link row. One footnote at the end of the section: "* Equal contribution" (Q-R3). |
-| 4 | **Certifications** | Certifications | One compact row per vendor, highest level first: vendor name in mono, featured certs inline separated by `·`, then a native `<details>` "+ N more" that expands the rest in place. Google Cloud has no extras, so no toggle. 10 visible names out of 19. Set at body size or smaller, no badges, so it reads lighter than Projects and Publications. |
+| 4 | **Certifications** | Certifications | One compact row per vendor, highest level first: vendor name in mono, then all of that vendor's certifications listed plainly (19 in total, no toggle; changed 2026-11-24). Set smaller than body text, no badges, so it reads lighter than Projects and Publications. |
 | 5 | **Contact** | Contact | The one paragraph, with the email as a `mailto:` link. |
 
 Not on the page: "Meta" notes (site address, no CV), section-note labels, the Certifications display instructions, the Media lists, and the "Display my name in bold" note. These become schema fields or rendering rules instead of text.
@@ -232,13 +235,15 @@ publications = z.object({
   venue: z.string(),                      // "ACL 2025 (Main Conference)"
   location: z.string(),                   // "Vienna, Austria"
   year: z.number(),
-  authors: z.array(z.object({
-    name: z.string(),
-    me: z.boolean().default(false),       // rendered bold
-    equal: z.boolean().default(false),    // rendered with *
-  })),
+  authors: z.array(z.union([            // in published order
+    z.object({
+      name: z.string(),
+      me: z.boolean().default(false),     // rendered bold
+      equal: z.boolean().default(false),  // rendered with *
+    }),
+    z.object({ gap: z.literal(true) }),   // omitted authors, rendered as "…"
+  ])),
   etAl: z.boolean().default(false),
-  authorNote: z.string().optional(),      // SEA-VL's collaboration note (Q-R2)
   links: z.array(z.object({
     kind: z.enum(['acl', 'arxiv', 'ieee', 'pdf', 'other']),
     url: z.string().url(),
@@ -270,13 +275,12 @@ certVendors = z.object({ id: z.string(), name: z.string(), order: z.number() });
 certifications = z.object({
   vendor: reference('certVendors'),
   name: z.string(),
-  featured: z.boolean().default(false),
   order: z.number(),                      // highest level first within vendor
   badgeUrl: z.string().url().optional(),
 });
 
 // ui: src/content/ui.yaml: every UI string (nav labels, "Read the case study",
-// "+ N more", footnote text) in one place so the copy check covers it.
+// footnote text) in one place so the copy check covers it.
 ```
 
 The patent refine means numbers can't even be stored in the repo until `published: true`. That matters if the repo is public (Q-G6).
@@ -326,7 +330,7 @@ The page reads like a code review: claims as changes, evidence as review comment
 
 Your lean is right. Reasons:
 
-- **Zero JS by default.** The site needs about three small scripts (video autoplay, `<details>` label, maybe the contents highlight). Astro ships HTML and CSS and nothing else unless asked.
+- **Zero JS by default.** The site needs about three small scripts (video autoplay, maybe the contents highlight). Astro ships HTML and CSS and nothing else unless asked.
 - **Typed content is first-class.** Zod schemas, `reference()` between collections, build errors on bad entries, and MDX bodies with components (`<Media>`) for case studies.
 - **Static output needs no adapter** on Vercel. Images go through `astro:assets` (AVIF/WebP, sized `srcset`).
 - **TypeScript throughout,** including the check scripts (`tsx`).
@@ -510,7 +514,7 @@ Every milestone ends with the same gate, and I report each result to you:
 | 3 | **Design system.** Tokens, fonts, base and prose CSS, `MarginNote`, `StatusStamp`, a dev-only `/_specimen` page (excluded from build output). Contrast checks. | Specimen screenshots in both schemes; AA contrast for every text/background pair. |
 | 4 | **Home: Intro + Personal Projects.** | Cards, badge, links, CV slot (verified by temporarily setting `cv`). |
 | 5 | **Home: Experience + Patents & Publications.** Move the paper count ("3 papers") out of the group `h3` so screen readers don't read it as part of the heading (noted in M2 review). | Bold name, `*` marks, footnote, group order, patent shows only allowed fields; group headings contain only the heading text. |
-| 6 | **Home: Certifications + Contact + header/footer.** | `<details>` toggles work by keyboard; certs section is visibly lighter than projects. |
+| 6 | **Home: Certifications + Contact + header/footer.** All 19 certifications listed, no toggle (changed 2026-11-24). | Certs section is visibly lighter than projects; header nav and skip link work by keyboard. |
 | 7 | **Case study pages.** Prose layout, contents list, responsive games table, `<Media>` placeholders, reduced-motion behavior. | Table readable at 390 wide; placeholders visible; reduced-motion verified with Playwright's `reducedMotion: 'reduce'`. |
 | 8 | **SEO.** Per-page OG images, sitemap, canonical, meta descriptions (from blurbs/headline), 404. | I view each OG PNG; sitemap and canonicals use the env URL; switching `SITE_URL` locally changes all of them. |
 | 9 | **Quality pass.** axe (via Playwright) on every page, keyboard pass, Lighthouse on the preview, no layout shift from fonts. | Zero axe violations; Lighthouse numbers reported as measured. |

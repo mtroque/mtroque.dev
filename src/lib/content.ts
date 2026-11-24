@@ -29,8 +29,7 @@ export async function getPublicationGroups() {
 export async function getCertificationsByVendor() {
   const [vendors, certs] = await Promise.all([getCollection('certVendors'), getCollection('certifications')]);
   return vendors.sort(byOrder).map((v) => {
-    const mine = certs.filter((c) => c.data.vendor.id === v.id).sort(byOrder);
-    return { vendor: v, featured: mine.filter((c) => c.data.featured), more: mine.filter((c) => !c.data.featured) };
+    return { vendor: v, certs: certs.filter((c) => c.data.vendor.id === v.id).sort(byOrder) };
   });
 }
 

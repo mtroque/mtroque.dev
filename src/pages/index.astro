@@ -1,29 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
 import Intro from '../components/Intro.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ExperienceOrg from '../components/ExperienceOrg.astro';
 import Patent from '../components/Patent.astro';
 import PubGroup from '../components/PubGroup.astro';
-import CertVendor from '../components/CertVendor.astro';
+import Certifications from '../components/Certifications.astro';
 import {
-  getProfile, getUi, getProjects, getExperience, getPatents, getPublicationGroups, getCertificationsByVendor,
+  getProfile, getUi, getProjects, getExperience, getPatents, getPublicationGroups,
 } from '../lib/content';
 import { inline } from '../lib/format';
 
-const [profile, ui, projects, experience, patents, groups, certs] = await Promise.all([
-  getProfile(), getUi(), getProjects(), getExperience(), getPatents(), getPublicationGroups(), getCertificationsByVendor(),
+const [profile, ui, projects, experience, patents, groups] = await Promise.all([
+  getProfile(), getUi(), getProjects(), getExperience(), getPatents(), getPublicationGroups(),
 ]);
 ---
 <Base title={profile.name} description={profile.headline}>
-  <header class="site-header page">
-    <a href="/">{profile.name}</a>
-    <nav aria-label={ui.navLabel}>
-      <ul>{ui.nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
-    </nav>
-  </header>
+  <SiteHeader home />
 
-  <main class="page">
+  <main class="page" id="main">
     <Intro />
 
     <section class="record" id="projects" aria-labelledby="projects-h">
@@ -56,7 +53,7 @@ const [profile, ui, projects, experience, patents, groups, certs] = await Promis
       <p class="record__rail" aria-hidden="true">§4</p>
       <div class="record__body">
         <h2 id="certifications-h">{ui.sections.certifications}</h2>
-        {certs.map((c) => <CertVendor {...c} />)}
+        <Certifications />
       </div>
     </section>
 
@@ -64,13 +61,15 @@ const [profile, ui, projects, experience, patents, groups, certs] = await Promis
       <p class="record__rail" aria-hidden="true">§5</p>
       <div class="record__body">
         <h2 id="contact-h">{ui.sections.contact}</h2>
-        <p set:html={inline(profile.contact)} />
+        <p class="contact" set:html={inline(profile.contact)} />
       </div>
     </section>
   </main>
+  <SiteFooter />
 </Base>
 
 <style>
   .section-note { margin-top: var(--space-2); }
   .projects, .orgs { margin-top: var(--space-8); }
+  .contact { margin-top: var(--space-4); font-size: var(--step-1); line-height: 1.45; }
 </style>

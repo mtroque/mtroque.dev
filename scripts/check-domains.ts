@@ -9,7 +9,7 @@
  *   - the GitHub repo path "mtroque/mtroque.dev"
  *   - other projects' vercel.app hosts (e.g. the Tablekeeper app)
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { relative } from 'node:path';
 
@@ -35,7 +35,8 @@ export function findDomainHits(text: string): { line: number; match: string; rul
 
 function listFiles(): string[] {
   const out = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { encoding: 'utf8' });
-  return out.split('\n').filter((f) => f && f !== SELF && TEXT.test(f) && SCOPE.some((re) => re.test(f)));
+  // --cached still lists tracked files deleted from disk; skip those.
+  return out.split('\n').filter((f) => f && f !== SELF && TEXT.test(f) && SCOPE.some((re) => re.test(f)) && existsSync(f));
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -1,0 +1,52 @@
+---
+import { getCertificationsByVendor } from '../lib/content';
+const vendors = await getCertificationsByVendor();
+---
+{/* Compact by design: smaller type than projects and publications, no cards, no badges. */}
+<dl class="certs">
+  {vendors.map(({ vendor, certs }) => (
+    <div class="certs__vendor">
+      <dt class="certs__name">{vendor.data.name}</dt>
+      <dd>
+        <ul class="certs__list">
+          {certs.map((c) => (
+            <li>{c.data.badgeUrl ? <a href={c.data.badgeUrl} rel="noopener">{c.data.name}</a> : c.data.name}</li>
+          ))}
+        </ul>
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .certs { margin-top: var(--space-6); }
+  .certs__vendor {
+    padding-block: var(--space-4);
+    border-top: var(--hairline);
+  }
+  .certs__vendor:last-child { border-bottom: var(--hairline); }
+  .certs__name {
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: var(--tracking-mono);
+  }
+  .certs dd { margin: var(--space-2) 0 0; }
+  .certs__list {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .certs__list li + li { margin-top: var(--space-1); }
+
+  @media (min-width: 40rem) {
+    .certs__vendor {
+      display: grid;
+      grid-template-columns: 10rem minmax(0, 1fr);
+      column-gap: var(--space-6);
+      align-items: baseline;
+    }
+    .certs dd { margin-top: 0; }
+  }
+</style>

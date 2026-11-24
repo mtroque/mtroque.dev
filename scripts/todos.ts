@@ -5,7 +5,7 @@
  * The build gate (src/integrations/todo-gate.ts) scans the built HTML as well, so TODOs that
  * only appear once rendered (e.g. empty media slots) are caught too.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { parse as parseYaml } from 'yaml';
 
@@ -33,7 +33,8 @@ const TEXT = /\.(ts|tsx|js|mjs|astro|mdx?|ya?ml|json|css|html|svg|txt)$/;
 
 export function listSourceFiles(): string[] {
   const out = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { encoding: 'utf8' });
-  return out.split('\n').filter((f) => f && TEXT.test(f) && SCOPE.some((re) => re.test(f)));
+  // --cached still lists tracked files deleted from disk; skip those.
+  return out.split('\n').filter((f) => f && TEXT.test(f) && SCOPE.some((re) => re.test(f)) && existsSync(f));
 }
 
 /** Media items with no file yet render as placeholders; list each at its frontmatter line. */

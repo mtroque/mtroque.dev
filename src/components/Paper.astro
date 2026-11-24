@@ -6,7 +6,9 @@ interface Props { paper: CollectionEntry<'publications'> }
 const { data } = Astro.props.paper;
 const ui = await getUi();
 const primary = data.links[0]!.url;
-const hasEqual = data.authors.some((a) => a.equal);
+const hasEqual = data.authors.some((a) => 'name' in a && a.equal);
+const isGap = (i: number) => i >= 0 && 'gap' in data.authors[i]!;
+const lastIsGap = isGap(data.authors.length - 1);
 ---
 <article class="paper">
   <h4 class="paper__title"><a href={primary} rel="noopener">{data.title}</a></h4>
@@ -14,13 +16,18 @@ const hasEqual = data.authors.some((a) => a.equal);
   <p class="paper__authors">
     {data.authors.map((a, i) => (
       <>
-        {i > 0 && ', '}
-        <span class:list={['author', { 'author--me': a.me }]}>{a.name}</span>
-        {a.equal && <sup><span aria-hidden="true">*</span><span class="visually-hidden"> ({ui.equalContribution})</span></sup>}
+        {i > 0 && (isGap(i - 1) ? ' ' : ', ')}
+        {'gap' in a ? (
+          ui.authorGap
+        ) : (
+          <>
+            <span class:list={['author', { 'author--me': a.me }]}>{a.name}</span>
+            {a.equal && <sup><span aria-hidden="true">*</span><span class="visually-hidden"> ({ui.equalContribution})</span></sup>}
+          </>
+        )}
       </>
     ))}
-    {data.etAl && <>, {ui.etAl}</>}
-    {data.authorNote && <span class="muted"> ({data.authorNote})</span>}
+    {data.etAl && <>{lastIsGap ? ' ' : ', '}{ui.etAl}</>}
   </p>
   <p class="paper__summary">{data.summary}</p>
   <ul class="paper__links mono">
@@ -44,8 +51,10 @@ const hasEqual = data.authors.some((a) => a.equal);
     margin-top: var(--space-3);
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-1) var(--space-6);
+    gap: var(--space-1) var(--space-3);
   }
   .paper__links a { display: inline-block; padding-block: var(--space-1); }
+  /* Visible "·" between links; empty alt text keeps screen readers from announcing it. */
+  .paper__links li + li::before { content: '·' / ''; color: var(--ink-muted); margin-right: var(--space-3); }
   .paper__footnote { margin-top: var(--space-2); }
 </style>

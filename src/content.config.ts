@@ -43,15 +43,15 @@ const ui = defineCollection({
     present: z.string(),
     patentStatus: z.object({ pending: z.string(), granted: z.string() }),
     etAl: z.string(),
+    authorGap: z.string(),
     equalContribution: z.string(),
     paperCount: z.object({ one: z.string(), other: z.string() }),
     publicationLinks: z.object({ acl: z.string(), arxiv: z.string(), ieee: z.string(), pdf: z.string(), other: z.string() }),
-    moreToggle: z.string(),
     cvLink: z.string(),
-    backHome: z.string(),
     navLabel: z.string(),
     tocLabel: z.string(),
     profileLinksLabel: z.string(),
+    skipLink: z.string(),
   }),
 });
 
@@ -132,17 +132,20 @@ const publications = defineCollection({
     venue: z.string(),
     location: z.string(),
     year: z.number().int(),
+    /** In published order. `{ gap: true }` stands for omitted authors and renders as "…". */
     authors: z
       .array(
-        z.object({
-          name: z.string(),
-          me: z.boolean().default(false),
-          equal: z.boolean().default(false),
-        }),
+        z.union([
+          z.object({
+            name: z.string(),
+            me: z.boolean().default(false),
+            equal: z.boolean().default(false),
+          }),
+          z.object({ gap: z.literal(true) }),
+        ]),
       )
       .min(1),
     etAl: z.boolean().default(false),
-    authorNote: z.string().optional(),
     links: z
       .array(
         z.object({
@@ -198,7 +201,6 @@ const certifications = defineCollection({
   schema: z.object({
     vendor: reference('certVendors'),
     name: z.string(),
-    featured: z.boolean().default(false),
     /** Highest level first within a vendor. */
     order: z.number().int(),
     badgeUrl: z.url().optional(),

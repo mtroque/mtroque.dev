@@ -1,97 +1,78 @@
-# Highest level first within each vendor (`order`). Featured ones show by default.
+# Highest level first within each vendor (`order`). All are listed.
 # badgeUrl is optional; none yet.
 - id: claude-architect-professional
   vendor: anthropic
   name: Claude Certified Architect – Professional
-  featured: true
   order: 1
 - id: claude-architect-foundations
   vendor: anthropic
   name: Architect – Foundations
-  featured: false
   order: 2
 - id: claude-developer-foundations
   vendor: anthropic
   name: Developer – Foundations
-  featured: false
   order: 3
 - id: claude-associate-foundations
   vendor: anthropic
   name: Associate – Foundations
-  featured: false
   order: 4
 - id: aws-fde-advanced
   vendor: aws
   name: Forward Deployed Engineer – Advanced (Partner)
-  featured: true
   order: 1
 - id: aws-genai-developer-professional
   vendor: aws
   name: Generative AI Developer – Professional
-  featured: true
   order: 2
 - id: aws-solutions-architect-professional
   vendor: aws
   name: Solutions Architect – Professional
-  featured: true
   order: 3
 - id: aws-solutions-architect-associate
   vendor: aws
   name: Solutions Architect – Associate
-  featured: false
   order: 4
 - id: aws-ai-practitioner
   vendor: aws
   name: AI Practitioner
-  featured: false
   order: 5
 - id: aws-cloud-practitioner
   vendor: aws
   name: Cloud Practitioner
-  featured: false
   order: 6
 - id: ms-frontier-transformation-engineer
   vendor: microsoft
   name: Frontier Transformation Engineer (TITAN)
-  featured: true
   order: 1
 - id: ms-agentic-ai-business-solutions-architect
   vendor: microsoft
   name: Agentic AI Business Solutions Architect
-  featured: true
   order: 2
 - id: ms-azure-ai-apps-agents-developer
   vendor: microsoft
   name: Azure AI Apps and Agents Developer Associate
-  featured: true
   order: 3
 - id: ms-mlops-engineer-associate
   vendor: microsoft
   name: Machine Learning Operations Engineer Associate
-  featured: false
   order: 4
 - id: ms-github-copilot
   vendor: microsoft
   name: GitHub Copilot
-  featured: false
   order: 5
 - id: ms-azure-ai-fundamentals
   vendor: microsoft
   name: Azure AI Fundamentals
-  featured: false
   order: 6
 - id: gcp-agentic-architect
   vendor: google-cloud
   name: Professional Agentic Architect
-  featured: true
   order: 1
 - id: gcp-ml-engineer
   vendor: google-cloud
   name: Professional Machine Learning Engineer
-  featured: true
   order: 2
 - id: gcp-cloud-architect
   vendor: google-cloud
   name: Professional Cloud Architect
-  featured: true
   order: 3

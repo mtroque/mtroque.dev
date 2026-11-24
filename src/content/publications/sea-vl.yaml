@@ -5,11 +5,15 @@ order: 1
 venue: ACL 2025 (Main Conference)
 location: Vienna, Austria
 year: 2025
+# Abbreviated: 92 authors. Matthew Theodore Roque is author 36 (ACL Anthology 2025.acl-long.916).
 authors:
   - name: Samuel Cahyawijaya
   - name: Holy Lovenia
+  - gap: true
+  - name: Matthew Theodore Roque
+    me: true
+  - gap: true
 etAl: true
-authorNote: large multi-institution collaboration; I'm one of the contributors
 links:
   - kind: acl
     url: https://aclanthology.org/2025.acl-long.916/

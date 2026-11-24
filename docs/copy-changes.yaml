@@ -9,3 +9,20 @@
     The full Strop case study lives on its own page, so "below" was wrong on both the
     home page and the Tablekeeper case study. Strop now links to its case study.
   approved: 2026-11-23
+
+- file: src/content/publications/sea-vl.yaml
+  before: "Samuel Cahyawijaya, Holy Lovenia, et al. (large multi-institution collaboration; I'm one of the contributors)"
+  after: "Samuel Cahyawijaya, Holy Lovenia, … Matthew Theodore Roque, … et al."
+  reason: >-
+    Show my authorship the same way as other papers instead of a parenthetical note.
+    Name as published in ACL Anthology 2025.acl-long.916 (author 36 of 92); the
+    parenthetical is removed.
+  approved: 2026-11-24
+
+- file: src/content/certifications.yaml
+  before: 'Display grouped by vendor, highest level first. Show the "featured" ones by default; fold the rest into a "+ N more" toggle per vendor. No badge links for now (keep an optional field for them).'
+  after: 'Display grouped by vendor, highest level first, all 19 listed (no "+ N more" toggle). No badge links for now (keep an optional field for them).'
+  reason: >-
+    Display change: list every certification plainly. The featured/more split is removed
+    from the schema and content.
+  approved: 2026-11-24
