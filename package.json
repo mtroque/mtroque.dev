@@ -23,7 +23,10 @@
     "check:fonts": "tsx scripts/fonts.ts --check",
     "check:font-features": "tsx scripts/check-font-features.ts",
     "check:motion": "tsx scripts/check-motion.ts",
-    "check:seo": "tsx scripts/check-seo.ts"
+    "check:seo": "tsx scripts/check-seo.ts",
+    "check:a11y": "tsx scripts/check-a11y.ts",
+    "measure:cls": "tsx scripts/measure-cls.ts",
+    "measure:lighthouse": "tsx scripts/measure-lighthouse.ts"
   },
   "devEngines": {
     "runtime": {
@@ -42,11 +45,17 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@axe-core/playwright": "^4.14.0",
+    "@capsizecss/core": "^4.1.3",
+    "@capsizecss/metrics": "^4.5.0",
+    "@capsizecss/unpack": "^4.0.1",
     "@resvg/resvg-js": "^2.6.2",
     "@types/hast": "^3.0.5",
     "@types/mdast": "^4.0.4",
+    "chrome-launcher": "^1.2.3",
     "fast-glob": "^3.3.3",
     "fontkit": "^3.0.0",
+    "lighthouse": "^13.6.0",
     "mdast-util-to-string": "^4.0.0",
     "playwright": "^1.65.1",
     "remark-frontmatter": "^5.0.0",

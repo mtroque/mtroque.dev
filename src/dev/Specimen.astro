@@ -19,7 +19,8 @@ const swatches = ['paper', 'paper-sunk', 'ink', 'ink-muted', 'rule', 'accent'];
 const poster = await getImage({ src: demoPoster, format: 'webp' });
 ---
 <Base title="Specimen" noindex>
-  <div class="page">
+  <main class="page" id="main">
+    <h1 class="mono muted specimen-h1">Specimen (dev only)</h1>
     <section class="record">
       <p class="record__rail">§0 Type</p>
       <div class="record__body prose">
@@ -63,10 +64,11 @@ const poster = await getImage({ src: demoPoster, format: 'webp' });
         </ul>
       </div>
     </section>
-  </div>
+  </main>
 </Base>
 
 <style>
+  .specimen-h1 { font-size: var(--step--1); font-weight: 500; padding-top: var(--space-6); }
   .specimen-lede { font-size: var(--step-3); line-height: 1.2; font-weight: 500; }
   .swatches { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: var(--space-4); }
   .swatch { display: block; height: 3rem; border: var(--hairline); margin-bottom: var(--space-2); }

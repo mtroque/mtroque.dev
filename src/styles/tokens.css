@@ -16,8 +16,11 @@
     --paper-sunk: #f2efe6;
 
     /* Type */
-    --font-serif: 'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
-    --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+    /* Metric-matched fallbacks (src/styles/font-fallbacks.css) come right after each web font. */
+    --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback: Georgia', 'Source Serif 4 Fallback: Noto Serif',
+      'Source Serif 4 Fallback: Times New Roman', Georgia, 'Noto Serif', 'Times New Roman', serif;
+    --font-mono: 'IBM Plex Mono', 'IBM Plex Mono Fallback: Courier New', 'IBM Plex Mono Fallback: Noto Sans Mono',
+      'Courier New', 'Noto Sans Mono', monospace;
 
     --step--1: 0.8125rem; /* 13px: mono metadata */
     --step-0: 1.125rem;   /* 18px: body */

@@ -5,6 +5,7 @@
 import { createServer, type Server } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
+import { brotliCompressSync } from 'node:zlib';
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json',
@@ -20,8 +21,16 @@ export async function serveDist(port: number, root = 'dist'): Promise<Server> {
     if (!path.startsWith(normalize(root))) return void res.writeHead(403).end();
     try {
       if ((await stat(path)).isDirectory()) path = join(path, 'index.html');
-      res.writeHead(200, { 'Content-Type': TYPES[extname(path)] ?? 'application/octet-stream' });
-      res.end(await readFile(path));
+      const type = TYPES[extname(path)] ?? 'application/octet-stream';
+      let body = await readFile(path);
+      const headers: Record<string, string> = { 'Content-Type': type };
+      // Brotli for text, like Vercel, so size measurements are realistic.
+      if (/text|javascript|json|xml|svg/.test(type) && /\bbr\b/.test(String(req.headers['accept-encoding']))) {
+        body = brotliCompressSync(body);
+        headers['Content-Encoding'] = 'br';
+      }
+      res.writeHead(200, headers);
+      res.end(body);
     } catch {
       res.writeHead(404).end('not found');
     }
