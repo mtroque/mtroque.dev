@@ -1,0 +1,113 @@
+---
+/**
+ * Desktop: a sticky left column with the name, short headline, section nav and profile links.
+ * Phone: the name and links at the top, then a compact sticky bar that shows the current section
+ * and opens the same nav. Without JS every item is a plain anchor link; with JS the current
+ * section is marked (aria-current) while scrolling. Marking changes color only, so nothing moves.
+ */
+import { getProfile, getUi } from '../lib/content';
+import { isExternal } from '../lib/format';
+
+export interface NavItem { label: string; href: string }
+interface Props {
+  nav: NavItem[];
+  /** Accessible name of the nav. */
+  navLabel: string;
+  /** Home page: the name is the page's h1. Elsewhere it links home. */
+  home?: boolean | undefined;
+  /** Extra link above the nav (case studies: back to the home page). */
+  back?: NavItem | undefined;
+}
+const { nav, navLabel, home = false, back } = Astro.props;
+const [profile, ui] = await Promise.all([getProfile(), getUi()]);
+const num = (i: number) => String(i + 1).padStart(2, '0');
+---
+<a class="skip-link" href="#main">{ui.skipLink}</a>
+<header class="sidebar">
+  <div class="sidebar__id">
+    {home
+      ? <h1 class="sidebar__name" id="name">{profile.name}</h1>
+      : <p class="sidebar__name"><a href="/">{profile.name}</a></p>}
+    <p class="sidebar__tagline">{profile.shortHeadline}</p>
+  </div>
+
+  <nav class="sidebar__nav" aria-label={navLabel}>
+    {back && <p class="sidebar__back mono"><a href={back.href}>{back.label}</a></p>}
+    <ol class="navlist">
+      {nav.map((n, i) => (
+        <li><a href={n.href} data-nav-link><span class="navlist__num" aria-hidden="true">{num(i)}</span><span class="navlist__label">{n.label}</span></a></li>
+      ))}
+    </ol>
+  </nav>
+
+  <div class="sidebar__meta" role="group" aria-label={ui.profileLinksLabel}>
+    <ul class="sidebar__links mono">
+      {profile.links.map((l) => (
+        <li><a href={l.href} rel={isExternal(l.href) ? 'noopener' : undefined}>{l.label}</a></li>
+      ))}
+      {profile.cv && <li><a href={profile.cv}>{ui.cvLink}</a></li>}
+    </ul>
+    <p class="sidebar__location mono muted">{profile.location}</p>
+  </div>
+</header>
+
+<details class="phonebar" data-phonebar>
+  <summary class="phonebar__summary">
+    <span class="visually-hidden">{navLabel}: </span>
+    <span class="phonebar__current" data-current><span class="phonebar__num" data-current-num></span><span data-current-label>{navLabel}</span></span>
+    <svg class="phonebar__chev" aria-hidden="true" width="12" height="12" viewBox="0 0 12 12"><path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+  </summary>
+  <nav class="phonebar__nav" aria-label={navLabel}>
+    {back && <p class="sidebar__back mono"><a href={back.href}>{back.label}</a></p>}
+    <ol class="navlist">
+      {nav.map((n, i) => (
+        <li><a href={n.href} data-nav-link><span class="navlist__num" aria-hidden="true">{num(i)}</span><span class="navlist__label">{n.label}</span></a></li>
+      ))}
+    </ol>
+  </nav>
+</details>
+
+<script>
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  const ids = [...new Set(links.map((a) => decodeURIComponent(a.hash.slice(1))).filter(Boolean))];
+  const sections = ids.map((id) => document.getElementById(id)).filter((s): s is HTMLElement => !!s);
+  const bar = document.querySelector<HTMLDetailsElement>('[data-phonebar]');
+  const curNum = document.querySelector('[data-current-num]');
+  const curLabel = document.querySelector('[data-current-label]');
+  const defaultLabel = curLabel?.textContent ?? '';
+  let current: string | null | undefined;
+
+  function update() {
+    const line = window.innerHeight * 0.3;
+    let id: string | null = null;
+    for (const s of sections) if (s.getBoundingClientRect().top <= line) id = s.id;
+    const atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    if (atEnd && sections.length) id = sections[sections.length - 1]!.id;
+    if (id === current) return;
+    current = id;
+    for (const a of links) {
+      if (id && a.hash === `#${id}`) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+    }
+    const i = id ? ids.indexOf(id) : -1;
+    const match = links.find((a) => id && a.hash === `#${id}`);
+    if (curNum) curNum.textContent = i >= 0 ? String(i + 1).padStart(2, '0') : '';
+    if (curLabel) curLabel.textContent = match?.querySelector('.navlist__label')?.textContent ?? defaultLabel;
+  }
+  let queued = false;
+  addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; update(); });
+  }, { passive: true });
+  addEventListener('resize', update);
+  update();
+  // Close the phone menu after choosing a section.
+  bar?.addEventListener('click', (e) => {
+    if ((e.target as Element).closest('a')) bar.open = false;
+  });
+  // Escape closes it too, returning focus to the bar.
+  bar?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && bar.open) { bar.open = false; bar.querySelector('summary')?.focus(); }
+  });
+</script>

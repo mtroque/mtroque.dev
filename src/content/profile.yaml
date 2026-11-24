@@ -2,6 +2,7 @@
 name: Matthew Roque
 location: Taguig, Philippines
 headline: I build AI agents for work where mistakes are expensive, and the checks that show whether they did the job.
+shortHeadline: I build AI agents and the checks that show whether they did the job.
 bio:
   - I'm a Senior AI Engineer at PwC, building multi-agent systems for banks and insurers, where an agent's work has to hold up against regulation.
   - The question I keep coming back to is how you check what an AI actually did. It's behind [my pending patent](#publications) on prompt-to-output attribution, and behind [Strop](/projects/strop/), a tool I'm building that catches the workarounds coding agents don't mention and turns them into checks.

@@ -15,6 +15,8 @@ const profile = defineCollection({
     name: z.string(),
     location: z.string(),
     headline: z.string(),
+    /** Sidebar version of the headline (approved copy). */
+    shortHeadline: z.string(),
     /** Paragraphs, verbatim. Inline Markdown allowed for links. */
     bio: z.array(z.string()).min(1),
     links: z.array(z.object({ label: z.string(), href: z.string() })).min(1),
@@ -50,6 +52,7 @@ const ui = defineCollection({
     cvLink: z.string(),
     navLabel: z.string(),
     tocLabel: z.string(),
+    backHome: z.string(),
     profileLinksLabel: z.string(),
     skipLink: z.string(),
     checkLabel: z.string(),
@@ -152,6 +155,7 @@ const publications = defineCollection({
       )
       .min(1),
     etAl: z.boolean().default(false),
+    /** Empty: the title renders as plain text with no link row. */
     links: z
       .array(
         z.object({
@@ -160,7 +164,7 @@ const publications = defineCollection({
           label: z.string().optional(),
         }),
       )
-      .min(1),
+      .default([]),
     summary: z.string(),
   }),
 });

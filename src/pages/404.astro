@@ -1,13 +1,9 @@
 ---
-import Base from '../layouts/Base.astro';
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
+import Shell from '../layouts/Shell.astro';
 import { getProfile, getUi } from '../lib/content';
 const [profile, ui] = await Promise.all([getProfile(), getUi()]);
 ---
-<Base title={`${ui.notFound.title} · ${profile.name}`} noindex>
-  <SiteHeader />
-  <main class="page" id="main">
+<Shell title={`${ui.notFound.title} · ${profile.name}`} noindex nav={ui.nav} navLabel={ui.navLabel}>
     <section class="record not-found">
       <p class="record__rail" aria-hidden="true">404</p>
       <div class="record__body">
@@ -15,9 +11,7 @@ const [profile, ui] = await Promise.all([getProfile(), getUi()]);
         <p class="mono"><a href="/">{ui.notFound.home}</a></p>
       </div>
     </section>
-  </main>
-  <SiteFooter />
-</Base>
+</Shell>
 
 <style>
   .not-found { min-height: 50vh; align-content: start; }

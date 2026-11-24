@@ -42,12 +42,13 @@
     --space-12: 3rem;
     --space-16: 4rem;
 
-    /* Layout: rail | text | margin */
+    /* Layout: sidebar | text | margin */
     --measure: 38rem;
-    --rail: 9rem;
+    --sidebar: 14rem;
+    --shell-gap: 3.5rem;
     --margin: 14rem;
     --gutter: 2.5rem;
-    --page-max: calc(var(--rail) + var(--measure) + var(--margin) + 2 * var(--gutter));
+    --page-max: calc(var(--sidebar) + var(--shell-gap) + var(--measure) + var(--gutter) + var(--margin));
 
     --hairline: 1px solid var(--rule);
   }

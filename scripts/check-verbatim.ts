@@ -23,11 +23,11 @@ export function plain(line: string): string {
 }
 
 /**
- * Keys whose values are identifiers or structure, not copy. `alt` and `description` are new
- * copy (approved 2026-11-24, logged as type: new in docs/copy-changes.yaml): not in the
- * baseline, but linted by lint:copy like everything else.
+ * Keys whose values are identifiers or structure, not copy. `alt`, `description` and
+ * `shortHeadline` are new copy (approved 2026-11-24, logged as type: new in
+ * docs/copy-changes.yaml): not in the baseline, but linted by lint:copy like everything else.
  */
-const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'mp4', 'webm', 'alt', 'description']);
+const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'mp4', 'webm', 'alt', 'description', 'shortHeadline']);
 
 function strings(node: unknown, key = ''): string[] {
   if (typeof node === 'string') return STRUCTURAL.has(key) ? [] : [node];

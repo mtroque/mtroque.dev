@@ -1,8 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
+import Shell from '../layouts/Shell.astro';
 import Intro from '../components/Intro.astro';
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import ExperienceOrg from '../components/ExperienceOrg.astro';
 import Patent from '../components/Patent.astro';
@@ -17,14 +15,10 @@ const [profile, ui, projects, experience, patents, groups] = await Promise.all([
   getProfile(), getUi(), getProjects(), getExperience(), getPatents(), getPublicationGroups(),
 ]);
 ---
-<Base title={profile.name} description={profile.headline} ogImage="/og/home.png">
-  <SiteHeader home />
-
-  <main class="page" id="main">
+<Shell title={profile.name} description={profile.headline} ogImage="/og/home.png" home nav={ui.nav} navLabel={ui.navLabel}>
     <Intro />
 
     <section class="record" id="projects" aria-labelledby="projects-h">
-      <p class="record__rail" aria-hidden="true">§1</p>
       <div class="record__body">
         <h2 id="projects-h">{ui.sections.projects}</h2>
         <p class="section-note muted">{profile.sectionNotes.projects}</p>
@@ -33,7 +27,6 @@ const [profile, ui, projects, experience, patents, groups] = await Promise.all([
     </section>
 
     <section class="record" id="experience" aria-labelledby="experience-h">
-      <p class="record__rail" aria-hidden="true">§2</p>
       <div class="record__body">
         <h2 id="experience-h">{ui.sections.experience}</h2>
         <div class="orgs">{experience.map((o) => <ExperienceOrg org={o} />)}</div>
@@ -41,7 +34,6 @@ const [profile, ui, projects, experience, patents, groups] = await Promise.all([
     </section>
 
     <section class="record" id="publications" aria-labelledby="publications-h">
-      <p class="record__rail" aria-hidden="true">§3</p>
       <div class="record__body">
         <h2 id="publications-h">{ui.sections.publications}</h2>
         {patents.map((p) => <Patent patent={p} />)}
@@ -50,7 +42,6 @@ const [profile, ui, projects, experience, patents, groups] = await Promise.all([
     </section>
 
     <section class="record" id="certifications" aria-labelledby="certifications-h">
-      <p class="record__rail" aria-hidden="true">§4</p>
       <div class="record__body">
         <h2 id="certifications-h">{ui.sections.certifications}</h2>
         <Certifications />
@@ -58,15 +49,12 @@ const [profile, ui, projects, experience, patents, groups] = await Promise.all([
     </section>
 
     <section class="record" id="contact" aria-labelledby="contact-h">
-      <p class="record__rail" aria-hidden="true">§5</p>
       <div class="record__body">
         <h2 id="contact-h">{ui.sections.contact}</h2>
         <p class="contact" set:html={inline(profile.contact)} />
       </div>
     </section>
-  </main>
-  <SiteFooter />
-</Base>
+</Shell>
 
 <style>
   .section-note { margin-top: var(--space-2); }

@@ -1,0 +1,27 @@
+---
+/** Every page: sidebar (or phone header + section bar), main content, footer. */
+import Base from './Base.astro';
+import Sidebar, { type NavItem } from '../components/Sidebar.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  noindex?: boolean;
+  home?: boolean | undefined;
+  nav: NavItem[];
+  navLabel: string;
+  back?: NavItem | undefined;
+}
+const { nav, navLabel, home, back, ...base } = Astro.props;
+---
+<Base {...base}>
+  <div class="shell">
+    <Sidebar nav={nav} navLabel={navLabel} home={home} back={back} />
+    <div class="content">
+      <main id="main"><slot /></main>
+      <SiteFooter />
+    </div>
+  </div>
+</Base>

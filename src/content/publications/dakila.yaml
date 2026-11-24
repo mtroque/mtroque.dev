@@ -14,7 +14,6 @@ authors:
   - name: Michael Ng
   - name: Hans Nolasco
   - name: Jenine Valencia
-links:
-  - kind: pdf
-    url: https://pcsc.dlsu.edu.ph/proceedings/main-conference/28.pdf
+# No link: the proceedings host is unreachable (removed 2026-11-24, see docs/copy-changes.yaml).
+links: []
 summary: We built DAKILA, a search tool for the Philippine tax code, with a question dataset drawn from bar exam review materials plus LLM-generated questions. Our fine-tuned embedding model ranks the correct section first out of 311 about 70% of the time, and law and accountancy users rated the tool easy to use.

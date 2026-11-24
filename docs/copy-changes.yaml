@@ -120,3 +120,21 @@
   after: "Tablekeeper's rules assistant answering an Azul question with a citation chip to the rulebook, and saying the rulebook doesn't cover a strategy question."
   reason: Matches the capture; the rules questions moved from Patchwork to Azul and the answer has one citation chip.
   approved: 2026-11-24
+
+- file: src/content/publications/dakila.yaml
+  before: "- Links: https://pcsc.dlsu.edu.ph/proceedings/main-conference/28.pdf"
+  after: ""
+  reason: The PCSC proceedings host is unreachable; the paper is listed without a link and its title is plain text.
+  approved: 2026-11-24
+
+- type: new
+  file: src/content/profile.yaml (shortHeadline)
+  after: I build AI agents and the checks that show whether they did the job.
+  reason: Sidebar version of the headline (Milestone 11 layout); the headline with "for work where mistakes are expensive," removed.
+  approved: 2026-11-24
+
+- type: new
+  file: src/content/ui.yaml (backHome)
+  after: ← Home
+  reason: Back link above the contents list in case-study sidebars (Milestone 11 layout).
+  approved: 2026-11-24

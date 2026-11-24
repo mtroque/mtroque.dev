@@ -1,38 +1,23 @@
 ---
-import { getProfile, getUi } from '../lib/content';
-import { inline, isExternal } from '../lib/format';
+import { getProfile } from '../lib/content';
+import { inline } from '../lib/format';
 
-const [profile, ui] = await Promise.all([getProfile(), getUi()]);
+const profile = await getProfile();
 ---
-<section class="record intro" id="intro" aria-labelledby="name">
-  <h1 class="record__rail intro__name" id="name">{profile.name}</h1>
+<section class="record intro" id="intro" aria-label={profile.name}>
   <div class="record__body">
     <p class="intro__headline">{profile.headline}</p>
     <div class="intro__bio">
       {profile.bio.map((p) => <p set:html={inline(p)} />)}
     </div>
   </div>
-  <aside class="record__margin intro__meta" aria-label={ui.profileLinksLabel}>
-    <p class="mono muted">{profile.location}</p>
-    <ul class="intro__links mono">
-      {profile.links.map((l) => (
-        <li><a href={l.href} rel={isExternal(l.href) ? 'noopener' : undefined}>{l.label}</a></li>
-      ))}
-      {profile.cv && <li><a href={profile.cv}>{ui.cvLink}</a></li>}
-    </ul>
-  </aside>
 </section>
 
 <style>
   .intro { padding-block-start: var(--space-8); }
-  .intro__name {
-    /* The name is the h1 but set small, like a label: the headline carries the weight. */
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    font-weight: 500;
-    letter-spacing: var(--tracking-mono);
-    color: var(--ink);
-    line-height: 1.4;
+  @media (min-width: 64rem) {
+    /* First line's cap height level with the sidebar name. */
+    .intro { padding-block-start: 2.75rem; }
   }
   .intro__headline {
     font-size: var(--step-3);
@@ -46,19 +31,5 @@ const [profile, ui] = await Promise.all([getProfile(), getUi()]);
   }
   .intro__bio { margin-top: var(--space-8); }
   .intro__bio p + p { margin-top: var(--space-4); }
-  .intro__meta { margin-top: var(--space-2); }
-  .intro__links {
-    list-style: none;
-    padding: 0;
-    margin-top: var(--space-3);
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-6);
-  }
-  .intro__links a { padding-block: var(--space-1); display: inline-block; }
 
-  @media (min-width: 64rem) {
-    .intro__meta { margin-top: 0; padding-top: 0.6rem; border-left: var(--hairline); padding-left: var(--space-4); }
-    .intro__links { flex-direction: column; gap: var(--space-1); }
-  }
 </style>
