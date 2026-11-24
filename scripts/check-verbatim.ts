@@ -22,8 +22,11 @@ export function plain(line: string): string {
     .trim();
 }
 
-/** Keys whose values are identifiers or structure, not copy. */
-const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster']);
+/**
+ * Keys whose values are identifiers or structure, not copy. `alt` is new copy (approved alt
+ * text, Q-T1 2026-11-24): not in the baseline, but linted by lint:copy like everything else.
+ */
+const STRUCTURAL = new Set(['id', 'group', 'vendor', 'kind', 'status', 'start', 'end', 'href', 'src', 'poster', 'alt']);
 
 function strings(node: unknown, key = ''): string[] {
   if (typeof node === 'string') return STRUCTURAL.has(key) ? [] : [node];

@@ -16,7 +16,9 @@ describe('font subsets', () => {
   it('use font-display: swap on every face', () => {
     const css = readFileSync('src/styles/fonts.css', 'utf8');
     const faces = css.match(/@font-face\s*{[^}]*}/g) ?? [];
-    expect(faces).toHaveLength(FONTS.length);
+    // og/ fonts are build-only (OG images) and never get an @font-face.
+    expect(faces).toHaveLength(FONTS.filter((f) => !f.file.startsWith('og/')).length);
+    expect(css).not.toMatch(/fonts\/og\//);
     for (const f of faces) expect(f).toMatch(/font-display:\s*swap/);
   });
 });

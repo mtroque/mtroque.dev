@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { getProfile, getUi } from '../lib/content';
+const [profile, ui] = await Promise.all([getProfile(), getUi()]);
+---
+<Base title={`${ui.notFound.title} · ${profile.name}`} noindex>
+  <SiteHeader />
+  <main class="page" id="main">
+    <section class="record not-found">
+      <p class="record__rail" aria-hidden="true">404</p>
+      <div class="record__body">
+        <h1>{ui.notFound.title}</h1>
+        <p class="mono"><a href="/">{ui.notFound.home}</a></p>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</Base>
+
+<style>
+  .not-found { min-height: 50vh; align-content: start; }
+  .not-found h1 { font-size: var(--step-3); }
+  .not-found p { margin-top: var(--space-4); }
+</style>

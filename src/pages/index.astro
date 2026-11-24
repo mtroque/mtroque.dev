@@ -17,7 +17,7 @@ const [profile, ui, projects, experience, patents, groups] = await Promise.all([
   getProfile(), getUi(), getProjects(), getExperience(), getPatents(), getPublicationGroups(),
 ]);
 ---
-<Base title={profile.name} description={profile.headline}>
+<Base title={profile.name} description={profile.headline} ogImage="/og/home.png">
   <SiteHeader home />
 
   <main class="page" id="main">

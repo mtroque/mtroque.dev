@@ -17,7 +17,7 @@ const { data } = project;
 const [{ Content, headings }, ui, profile] = await Promise.all([render(project), getUi(), getProfile()]);
 const sections = headings.filter((h) => h.depth === 2);
 ---
-<Base title={`${data.title} · ${profile.name}`} description={data.blurb}>
+<Base title={`${data.title} · ${profile.name}`} description={data.blurb} ogImage={`/og/${project.id}.png`}>
   <SiteHeader />
   <main class="page" id="main">
     <article class="case">

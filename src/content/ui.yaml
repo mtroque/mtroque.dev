@@ -45,5 +45,8 @@ tocLabel: On this page
 profileLinksLabel: Links
 skipLink: Skip to content
 checkLabel: "Yes"
+notFound:
+  title: Page not found
+  home: Go to the home page
 mediaPlay: Play
 mediaPause: Pause

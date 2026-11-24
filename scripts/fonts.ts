@@ -35,6 +35,22 @@ export const FONTS = [
     url: `${GOOGLE_FONTS}/633f3200539c52ee0aba2dfd7f46921417a81877/ofl/ibmplexmono/IBMPlexMono-Medium.ttf`,
     sha256: 'a9b4c49bb299e05b5f6c481e7fb5e78943d2793249a0c8874ab574a2d1ea6755',
   },
+  // Static instances for build-time OG images only (Satori renders variable fonts at their
+  // default instance). Not served to browsers.
+  {
+    file: 'og/source-serif-4-600.woff2',
+    url: `${GOOGLE_FONTS}/7b203a635ebe80801c80f29633d4fc467cd1214e/ofl/sourceserif4/SourceSerif4%5Bopsz%2Cwght%5D.ttf`,
+    sha256: '97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b',
+    axes: { wght: 600, opsz: 60 } as Record<string, number>,
+    noLayoutClosure: true,
+  },
+  {
+    file: 'og/source-serif-4-400.woff2',
+    url: `${GOOGLE_FONTS}/7b203a635ebe80801c80f29633d4fc467cd1214e/ofl/sourceserif4/SourceSerif4%5Bopsz%2Cwght%5D.ttf`,
+    sha256: '97b2d4da6e3cb494b5a1e66ae176914d852ccabef49e0c02c0df25f3e39aca0b',
+    axes: { wght: 400, opsz: 32 } as Record<string, number>,
+    noLayoutClosure: true,
+  },
 ] as const;
 
 export const OUT_DIR = 'src/assets/fonts';
@@ -83,7 +99,7 @@ async function source(url: string, sha256: string): Promise<Buffer> {
 async function build() {
   const { default: subsetFont } = await import('subset-font');
   const text = [...new Set([...BASE_CHARS, ...siteChars()])].join('');
-  mkdirSync(OUT_DIR, { recursive: true });
+  mkdirSync(`${OUT_DIR}/og`, { recursive: true });
   let total = 0;
   for (const f of FONTS) {
     const src = await source(f.url, f.sha256);
@@ -95,10 +111,10 @@ async function build() {
     const missing = missingFrom(out, siteChars());
     if (missing.length) throw new Error(`${f.file}: upstream font lacks ${missing.join(' ')}`);
     writeFileSync(`${OUT_DIR}/${f.file}`, out);
-    total += out.length;
+    if (!f.file.startsWith('og/')) total += out.length;
     console.log(`${f.file}: ${(out.length / 1024).toFixed(1)} KB`);
   }
-  console.log(`total: ${(total / 1024).toFixed(1)} KB for ${text.length} characters`);
+  console.log(`served total: ${(total / 1024).toFixed(1)} KB for ${text.length} characters (og/ files are build-only)`);
 }
 
 function check() {

@@ -1,16 +1,23 @@
 ---
 import Analytics from '@vercel/analytics/astro';
 import { isProductionDeploy } from '../config/site-url';
+import { getProfile } from '../lib/content';
+import { OG_HEIGHT, OG_WIDTH } from '../lib/og';
 import '../styles/global.css';
 import serifFont from '../assets/fonts/source-serif-4.woff2?url';
 
 interface Props {
   title: string;
   description?: string;
+  /** Site-relative path of this page's Open Graph image, e.g. /og/home.png */
+  ogImage?: string;
   noindex?: boolean;
 }
-const { title, description, noindex = false } = Astro.props;
+const { title, description, ogImage, noindex = false } = Astro.props;
+const profile = await getProfile();
+// Every absolute URL comes from Astro.site (the single site URL, src/config/site-url.ts).
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site) : undefined;
 const loadAnalytics = isProductionDeploy();
 ---
 <!doctype html>
@@ -25,6 +32,21 @@ const loadAnalytics = isProductionDeploy();
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={profile.name} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    {ogImageUrl && (
+      <>
+        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image:width" content={String(OG_WIDTH)} />
+        <meta property="og:image:height" content={String(OG_HEIGHT)} />
+        <meta property="og:image:alt" content={title} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
   </head>
   <body>
     <slot />

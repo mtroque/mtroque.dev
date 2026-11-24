@@ -53,6 +53,7 @@ const ui = defineCollection({
     profileLinksLabel: z.string(),
     skipLink: z.string(),
     checkLabel: z.string(),
+    notFound: z.object({ title: z.string(), home: z.string() }),
     mediaPlay: z.string(),
     mediaPause: z.string(),
   }),
