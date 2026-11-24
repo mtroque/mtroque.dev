@@ -49,8 +49,9 @@ export function loadCopyChanges(path = COPY_CHANGES): CopyChange[] {
   if (!existsSync(path)) return [];
   const raw = (parseYaml(readFileSync(path, 'utf8')) ?? []) as Partial<CopyChange>[];
   return raw.map((c, i) => {
-    if (!c.file || !c.before || !c.after || !c.reason || !c.approved)
-      throw new Error(`${path}: entry ${i + 1} needs file, before, after, reason and approved`);
+    // `after` may be "" for a removal, but the key must be there.
+    if (!c.file || !c.before || typeof c.after !== 'string' || !c.reason || !c.approved)
+      throw new Error(`${path}: entry ${i + 1} needs file, before, after (may be ""), reason and approved`);
     return c as CopyChange;
   });
 }
@@ -98,7 +99,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // Derived display strings must also match the source.
   for (const p of fg.sync('src/content/experience/*.yaml')) {
     const d = parseYaml(readFileSync(p, 'utf8'));
-    const range = formatRange(d.start, d.end, 'present');
+    const ui = parseYaml(readFileSync('src/content/ui.yaml', 'utf8'));
+    const range = formatRange(d.start, d.end, ui.present);
     if (!source.includes(range)) missing.push({ file: p, text: `(formatted dates) ${range}` });
   }
 

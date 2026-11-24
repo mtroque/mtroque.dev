@@ -26,3 +26,49 @@
     Display change: list every certification plainly. The featured/more split is removed
     from the schema and content.
   approved: 2026-11-24
+
+- file: src/content/certifications.yaml
+  before: "Claude Certified Architect – Professional"
+  after: "Architect – Professional"
+  reason: Matches its sibling certifications, which are listed without the "Claude Certified" prefix.
+  approved: 2026-11-24
+
+- file: src/content/cert-vendors.yaml
+  before: "Anthropic (Claude)"
+  after: "Claude"
+  reason: Vendor group renamed to "Claude".
+  approved: 2026-11-24
+
+- file: src/content/experience/samsung.yaml
+  before: " · 5 regions (US, Canada, UK, Australia, India)"
+  after: ""
+  reason: >-
+    It was the only Samsung entry with a qualifier; the regions move into the description
+    as a sentence (next entry).
+  approved: 2026-11-24
+
+- file: src/content/experience/samsung.yaml
+  before: "combined with scripted answer flows."
+  after: "combined with scripted answer flows. Live in the US, Canada, UK, Australia and India."
+  reason: Replaces the removed "5 regions" qualifier (previous entry).
+  approved: 2026-11-24
+
+- file: src/content/experience/pwc.yaml
+  before: "Section note: I build multi-agent systems for financial services clients. Client names and details stay confidential."
+  after: ""
+  reason: >-
+    Samsung has no parallel note, and the "major bank" / "major insurer" qualifiers already
+    show that client names are withheld. The qualifiers stay.
+  approved: 2026-11-24
+
+- file: src/lib/format.ts (dates are structured; the formatter changed, not strings)
+  before: "May 2026–present"
+  after: "May 2026 – Present"
+  reason: Every date range uses a spaced en dash and a capital "Present".
+  approved: 2026-11-24
+
+- file: src/lib/format.ts (dates are structured; the formatter changed, not strings)
+  before: "June 2024–May 2026"
+  after: "June 2024 – May 2026"
+  reason: Every date range uses a spaced en dash.
+  approved: 2026-11-24

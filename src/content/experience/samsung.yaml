@@ -6,8 +6,7 @@ location: Taguig, Philippines
 order: 2
 entries:
   - title: Samsung.com customer service chatbot
-    qualifier: 5 regions (US, Canada, UK, Australia, India)
-    body: A pre-LLM chatbot built on vector search over an FAQ database, combined with scripted answer flows.
+    body: A pre-LLM chatbot built on vector search over an FAQ database, combined with scripted answer flows. Live in the US, Canada, UK, Australia and India.
   - title: Appliance repair chatbot
     body: Used by Samsung repair technicians around the world. It uses the same architecture as the customer service chatbot.
   - title: Test cases and documentation from solution designs

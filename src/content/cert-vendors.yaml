@@ -1,5 +1,5 @@
 - id: anthropic
-  name: Anthropic (Claude)
+  name: Claude
   order: 1
 - id: aws
   name: AWS

@@ -32,6 +32,9 @@ Source of truth for copy: `docs/CONTENT.md` until Milestone 2, then `src/content
 - **SEA-VL authors** (approved 2026-11-24, logged in `docs/copy-changes.yaml`): "Samuel Cahyawijaya, Holy Lovenia, … **Matthew Theodore Roque**, … et al." Name as published in ACL Anthology 2025.acl-long.916, author 36 of 92. The parenthetical and the `authorNote` field are gone; author lists support `{ gap: true }` for "…". This supersedes Q-R2.
 - **Certifications** (approved 2026-11-24, logged): all 19 listed plainly by vendor, highest level first. The featured/more split and the "+ N more" toggle are removed from the schema, content and UI strings; `badgeUrl` stays optional.
 - **Paper links:** every paper shows all its links as visible labels separated by "·" (e.g. "ACL Anthology · arXiv"), in addition to the title link.
+- **Copy and display changes, 2026-11-24** (each logged in `docs/copy-changes.yaml`): "Architect – Professional" (was "Claude Certified Architect – Professional"); vendor group "Claude" (was "Anthropic (Claude)"); Samsung.com chatbot qualifier replaced by the sentence "Live in the US, Canada, UK, Australia and India."; PwC confidentiality note removed (qualifiers kept); date ranges as "May 2026 – Present" via the formatter. Work-project titles stay in sentence case.
+- **Links never contain trailing punctuation** (the Samsung "Research" line was the only case; all 79 links checked).
+- **Footer:** "© Matthew Roque", no year (a build-time year goes stale between deploys).
 
 
 Throughline for every decision below: **I build AI agents and make them trustworthy.** The design treats the site like an evidence file: every claim sits next to the thing that backs it (a paper, a patent, a number, a demo).

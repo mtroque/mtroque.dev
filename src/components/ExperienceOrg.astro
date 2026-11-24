@@ -6,6 +6,11 @@ import MarginNote from './MarginNote.astro';
 interface Props { org: CollectionEntry<'experience'> }
 const { data } = Astro.props.org;
 const ui = await getUi();
+/** Keep trailing punctuation outside a link so it isn't underlined. */
+const splitTrailing = (s: string) => {
+  const m = s.match(/^(.*?)([.,;:!?]*)$/s)!;
+  return { text: m[1]!, punct: m[2]! };
+};
 ---
 <article class="org">
   <h3 class="org__name">{data.org}</h3>
@@ -16,7 +21,9 @@ const ui = await getUi();
     {data.entries.map((e) => (
       <li class="entry">
         {e.href ? (
-          <p><strong>{e.title}:</strong> <a href={e.href}>{e.body}</a></p>
+          <p>
+            <strong>{e.title}:</strong> <a href={e.href}>{splitTrailing(e.body ?? '').text}</a>{splitTrailing(e.body ?? '').punct}
+          </p>
         ) : (
           <>
             <p class="entry__head">

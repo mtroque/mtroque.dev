@@ -69,3 +69,15 @@ describe('approved copy changes', () => {
     expect(() => applyCopyChanges('a', [{ file: 'f', before: 'b', after: 'c', reason: 'r', approved: 'd' }])).toThrow(/found 0 times/);
   });
 });
+
+describe('date ranges', () => {
+  it('use a spaced en dash and the given "Present" label', async () => {
+    const { formatRange } = await import('../src/lib/format');
+    expect(formatRange('2026-05', undefined, 'Present')).toBe('May 2026 – Present');
+    expect(formatRange('2024-06', '2026-05', 'Present')).toBe('June 2024 – May 2026');
+  });
+  it('copy changes may remove text with after: ""', async () => {
+    const { applyCopyChanges } = await import('../scripts/check-verbatim');
+    expect(applyCopyChanges('A. Note here.\nB.', [{ file: 'f', before: 'Note here.', after: '', reason: 'r', approved: 'd' }])).toBe('A. \nB.');
+  });
+});

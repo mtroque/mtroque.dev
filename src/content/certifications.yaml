@@ -2,7 +2,7 @@
 # badgeUrl is optional; none yet.
 - id: claude-architect-professional
   vendor: anthropic
-  name: Claude Certified Architect – Professional
+  name: Architect – Professional
   order: 1
 - id: claude-architect-foundations
   vendor: anthropic

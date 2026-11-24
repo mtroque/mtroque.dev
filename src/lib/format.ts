@@ -8,9 +8,9 @@ export function formatYearMonth(ym: string): string {
   return `${MONTHS[m! - 1]} ${y}`;
 }
 
-/** "May 2026–present", "June 2024–May 2026" (en dash, as in the source copy). */
+/** "May 2026 – Present", "June 2024 – May 2026": spaced en dash (approved 2026-11-24). */
 export function formatRange(start: string, end: string | undefined, present: string): string {
-  return `${formatYearMonth(start)}–${end ? formatYearMonth(end) : present}`;
+  return `${formatYearMonth(start)} – ${end ? formatYearMonth(end) : present}`;
 }
 
 /** Inline Markdown (links, emphasis) from content strings. Content is ours, not user input. */
